@@ -11,18 +11,12 @@ import css from "../css/app.css"
 //
 import "phoenix_html"
 
-// Import local files
-//
-// Local files can be imported directly using relative paths, for example:
-// import socket from "./socket"
-
-import React                            from 'react';  
-import ReactDOM                         from 'react-dom';  
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 // import { createStore, applyMiddleware } from 'redux'  
 // import { Provider}                      from 'react-redux'  
 // import thunk                            from 'redux-thunk'
-
-// import '../css/app.css'
 
 // import rootReducer from './reducers'
 
@@ -31,9 +25,37 @@ import ReactDOM                         from 'react-dom';
 //   applyMiddleware(thunk)
 // )
 
-ReactDOM.render(  
+// Components
+import Header from "./components/header.js";
+import Main from "./components/main.js";
+import Footer from "./components/footer.js";
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <Header />
+        <Main />
+        <Footer />
+      </div>
+    )
+  }
+}
+
+ReactDOM.render(
+  <BrowserRouter>
+    <App/>
+  </BrowserRouter>, 
+  document.getElementById('root')
+)
+
+// Render(( 
 //   <Provider store={store}>
 //     <App />
-//   </Provider>,
-  document.getElementById('root')
-);
+//   </Provider>
+// ), document.getElementById('root'))
+
+// Import local files
+//
+// Local files can be imported directly using relative paths, for example:
+// import socket from "./socket"
