@@ -48,3 +48,11 @@ See instructions for <a href="https://github.com/creationix/nvm">installing nvm 
 
 `curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash`
 `nvm install node` or `nvm install 10.13.0`
+
+## Develop
+
+### Running the application
+
+`cd divvy_tracker`
+
+see */divvy_tracker/README.md* for Phoenix server commands
