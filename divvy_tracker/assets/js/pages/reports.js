@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import LineGraph from '../components/charts/line-graph';
+import AreaGraph from '../components/charts/area-graph';
 
 const styles = theme => ({
   chartContainer: {
@@ -24,6 +25,9 @@ class Reports extends React.Component {
           </Typography>
           <Typography component="div" className={classes.chartContainer}>
             <LineGraph />
+          </Typography>
+          <Typography component="div" className={classes.chartContainer}>
+            <AreaGraph />
           </Typography>
         </main>
       </div>
