@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
@@ -35,7 +35,7 @@ const styles = theme => ({
   }
 });
 
-function Home(props) {
+function NotFound(props) {
   const { classes } = props;
 
   return (
@@ -45,25 +45,19 @@ function Home(props) {
         <div className={classes.heroUnit}>
           <div className={classes.heroContent}>
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Divvy Tracker
+              404
             </Typography>
             <Typography variant="h6" align="center" color="textSecondary" paragraph>
-              A collection of Divvy-inspired budgeting tools for categorizing transactions and 
-              keeping track of expenses. Built using React, Phoenix, recharts and Webpack.
+              Sorry, this page doesn't exist... yet :)
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={16} justify="center">
                 <Grid item>
                   <Button variant="contained" color="primary" component={Link} to="/dashboard" >
-                    Go To Dashboard
-                    <ChevronRightIcon />
+                    <ChevronLeftIcon />
+                    Go Back
                   </Button>
                 </Grid>
-                {/* <Grid item>
-                  <Button variant="outlined" color="primary">
-                    Check out other stuff >
-                  </Button>
-                </Grid> */}
               </Grid>
             </div>
           </div>
@@ -73,8 +67,8 @@ function Home(props) {
   );
 }
 
-Home.propTypes = {
+NotFound.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Home);
+export default withStyles(styles)(NotFound);

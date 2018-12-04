@@ -16,13 +16,7 @@ defmodule DivvyTrackerWeb.Router do
   scope "/", DivvyTrackerWeb do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
-  end
-
-  scope "/dashboard", DivvyTrackerWeb do
-    pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
+    get "/*path", PageController, :index
   end
 
   # Other scopes may use custom stacks.

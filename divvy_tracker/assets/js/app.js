@@ -26,17 +26,13 @@ import { BrowserRouter } from 'react-router-dom';
 // )
 
 // Components
-import Header from "./components/header.js";
 import Main from "./components/main.js";
-import Footer from "./components/footer.js";
 
 export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Header />
         <Main />
-        <Footer />
       </div>
     )
   }

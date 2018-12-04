@@ -9,30 +9,30 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 const styles = {
   table: {
     minWidth: 700,
-  },
+  }
 };
 
 let id = 0;
-function createData(date, name, category, merchant, amount) {
+function createData(name, expenses, budget) {
+  let over = expenses > budget ? 'Yes' : 'No';
   id += 1;
-  return { id, date, name, category, merchant, amount };
+  return { id, name, expenses, budget, over };
 }
 
 const data = [
-  createData(format(new Date(), 'MM/DD/YYYY'), 'Cindy Hawthorne', 'Food', 'Cost Vida', 35.64),
-  createData(format(new Date(), 'MM/DD/YYYY'), 'Dave Johnson', 'Travel', 'Delta', 458.25),
-  createData(format(new Date(), 'MM/DD/YYYY'), 'Peter Trimble', 'Food', 'JDawgs', 8.98),
-  createData(format(new Date(), 'MM/DD/YYYY'), 'Kyle Smith', 'Training', 'Pluralsite', 118.85),
-  createData(format(new Date(), 'MM/DD/YYYY'), 'Sarah Moore', 'Food', 'Arby\'s', 11.48),
-  createData(format(new Date(), 'MM/DD/YYYY'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54)
+  createData('Cindy Hawthorne', 250.85, 500.00),
+  createData('Dave Johnson', 350.21, 300.00),
+  createData('Peter Trimble', 85.25, 300.00),
+  createData('Kyle Smith', 420.23, 500.00),
+  createData('Sarah Moore', 11.48, 200.00),
+  createData('Andrew Thomas', 650.42, 1000.00)
 ];
 
-class Dashboard extends React.Component {
+class People extends React.Component {
   render() {
     const { classes } = this.props;
 
@@ -41,18 +41,17 @@ class Dashboard extends React.Component {
         <CssBaseline />
         <main className={classes.content}>
           <Typography variant="h4" gutterBottom component="h2">
-            Dashboard
+            People
           </Typography>
           <div className={classes.tableContainer}>
             <Paper className={classes.root}>
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
                     <TableCell>Name</TableCell>
-                    <TableCell>Category</TableCell>
-                    <TableCell>Merchant</TableCell>
-                    <TableCell numeric>Amount</TableCell>
+                    <TableCell numeric>Expenses</TableCell>
+                    <TableCell numeric>Budget</TableCell>
+                    <TableCell>Over?</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -60,12 +59,11 @@ class Dashboard extends React.Component {
                     return (
                       <TableRow key={n.id}>
                         <TableCell component="th" scope="row">
-                          {n.date}
+                          {n.name}
                         </TableCell>
-                        <TableCell>{n.name}</TableCell>
-                        <TableCell>{n.category}</TableCell>
-                        <TableCell>{n.merchant}</TableCell>
-                        <TableCell numeric>{n.amount}</TableCell>
+                        <TableCell numeric>{n.expenses}</TableCell>
+                        <TableCell numeric>{n.budget}</TableCell>
+                        <TableCell>{n.over}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -79,8 +77,8 @@ class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {
+People.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Dashboard);
+export default withStyles(styles)(People);
