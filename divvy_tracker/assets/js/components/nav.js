@@ -40,3 +40,9 @@ export const mainNav = (
     </ListItemLink>
   </div>
 );
+
+export const footerNav = (
+  <div>
+    TODO
+  </div>
+);

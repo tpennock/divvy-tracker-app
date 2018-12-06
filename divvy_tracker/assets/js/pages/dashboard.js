@@ -9,17 +9,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import MenuItem from '@material-ui/core/MenuItem';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogAddTransaction from '../components/dialogs/dialog-add-transaction';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 const styles = theme => ({
@@ -49,50 +41,13 @@ const data = [
   createData(format(new Date(), 'MM/DD/YYYY'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, '')
 ];
 
-// form values
-const categories = [
-  {
-    value: 'food',
-    label: 'Food',
-  },
-  {
-    value: 'travel',
-    label: 'Travel',
-  },
-  {
-    value: 'training',
-    label: 'Training',
-  },
-  {
-    value: 'office_snacks',
-    label: 'Office Snacks',
-  },
-  {
-    value: 'fuel',
-    label: 'Fuel',
-  }
-];
-
 class Dashboard extends React.Component {
   state = {
-    open: false,
-    form: {
-      name: '',
-      date: format(new Date(), 'YYYY-MM-DD'),
-      category: '',
-      merchant: '',
-      amount:'',
-      notes: ''
-    }
+    dialogOpen: false // this controls dialog visibility and will be passed -> child dialog
   };
 
   handleDialogToggle = () => {
-    this.setState(state => ({ open: !state.open }));
-  };
-
-  addTransaction = () => {
-    this.handleDialogToggle()
-    //TODO: save transaction data
+    this.setState(state => ({ dialogOpen: !state.dialogOpen }));
   };
 
   render() {
@@ -101,7 +56,7 @@ class Dashboard extends React.Component {
     return (
       <div>
         <CssBaseline />
-        <main className={classes.content}>
+        <main>
           <Typography variant="h4" gutterBottom component="h2">
             Dashboard
             <Fab color="primary" aria-label="Add" size="small" className={classes.fab} onClick={this.handleDialogToggle}>
@@ -137,97 +92,7 @@ class Dashboard extends React.Component {
                 </TableBody>
               </Table>
             </Paper>
-            <Dialog
-              fullWidth={true}
-              open={this.state.open}
-              onClose={this.handleDialogToggle}
-              aria-labelledby="form-dialog-title"
-            >
-              <DialogTitle id="form-dialog-title">New Transaction</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Enter details below to track an expense.
-                </DialogContentText>
-                <form className={classes.container} noValidate autoComplete="off">
-                  <TextField
-                    id="name"
-                    label="Name"
-                    fullWidth
-                    className={classes.textField}
-                    value={this.state.form.name}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="date"
-                    label="Date"
-                    type="date"
-                    fullWidth
-                    value={this.state.form.date}
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                  <TextField
-                    id="category"
-                    select
-                    fullWidth
-                    label="Category"
-                    className={classes.textField}
-                    value={this.state.form.category}
-                    SelectProps={{
-                      MenuProps: {
-                        className: classes.menu,
-                      },
-                    }}
-                    helperText="Please select your currency"
-                    margin="normal"
-                  >
-                    {categories.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField
-                    id="merchant"
-                    label="Merchant"
-                    className={classes.textField}
-                    fullWidth
-                    value={this.state.form.merchant}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="amount"
-                    label="Amount"
-                    fullWidth
-                    className={classes.textField}
-                    value={this.state.form.amount}
-                    InputProps={{
-                      startAdornment: <InputAdornment position="start">$</InputAdornment>
-                    }}
-                  />
-                  <TextField
-                    id="notes"
-                    label="Notes"
-                    multiline
-                    fullWidth
-                    rowsMax="4"
-                    value={this.state.form.notes}
-                    className={classes.textField}
-                    margin="normal"
-                  />
-                </form>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={this.handleDialogToggle} color="primary">
-                  Cancel
-                </Button>
-                <Button onClick={this.addTransaction} color="primary">
-                  Done
-                </Button>
-              </DialogActions>
-            </Dialog>
+            <DialogAddTransaction open={this.state.dialogOpen} closeDialog={this.handleDialogToggle} />
           </div>
         </main>
       </div>

@@ -14,9 +14,12 @@ import "phoenix_html"
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-// import { createStore, applyMiddleware } from 'redux'  
-// import { Provider}                      from 'react-redux'  
-// import thunk                            from 'redux-thunk'
+// import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux'
+// import { Provider, connect } from 'react-redux'  
+// import thunk from 'redux-thunk'
+
+// Components
+import Main from "./components/main.js";
 
 // import rootReducer from './reducers'
 
@@ -24,9 +27,6 @@ import { BrowserRouter } from 'react-router-dom';
 //   rootReducer,
 //   applyMiddleware(thunk)
 // )
-
-// Components
-import Main from "./components/main.js";
 
 export default class App extends React.Component {
   render() {
@@ -39,17 +39,14 @@ export default class App extends React.Component {
 }
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App/>
-  </BrowserRouter>, 
-  document.getElementById('root')
+  // <Provider store={store}>
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
+  // </Provider>
+  , 
+  document.getElementById('app')
 )
-
-// Render(( 
-//   <Provider store={store}>
-//     <App />
-//   </Provider>
-// ), document.getElementById('root'))
 
 // Import local files
 //

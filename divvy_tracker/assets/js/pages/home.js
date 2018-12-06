@@ -49,7 +49,7 @@ function Home(props) {
             </Typography>
             <Typography variant="h6" align="center" color="textSecondary" paragraph>
               A collection of Divvy-inspired budgeting tools for categorizing transactions and 
-              keeping track of expenses. Built using React, Phoenix, recharts and Webpack.
+              keeping track of expenses. Built using React, Phoenix, Recharts and Webpack.
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={16} justify="center">

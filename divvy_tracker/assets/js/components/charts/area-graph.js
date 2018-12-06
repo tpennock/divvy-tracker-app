@@ -18,7 +18,7 @@ const data = [
   { name: 'Sun', Expenses: 4490, Orders: 4300 },
 ];
 
-function LineGraph() {
+function AreaGraph() {
   return (
     // 99% per https://github.com/recharts/recharts/issues/172
     <ResponsiveContainer width="99%" height={320}>
@@ -35,4 +35,4 @@ function LineGraph() {
   );
 }
 
-export default LineGraph;
+export default AreaGraph;
