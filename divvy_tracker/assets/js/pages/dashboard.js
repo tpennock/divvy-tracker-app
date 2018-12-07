@@ -65,9 +65,9 @@ function getSorting(order, orderBy) {
 
 // data
 let id = 0;
-function createData(date, name, category, merchant, amount, notes) {
+function createData(date, name, category, merchant, amount_cents, notes) {
   id += 1;
-  return { id, date, name, category, merchant, amount, notes };
+  return { id, date, name, category, merchant, amount_cents, notes };
 }
 
 const rows = [
@@ -75,7 +75,7 @@ const rows = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'category', numeric: false, disablePadding: false, label: 'Category' },
   { id: 'merchant', numeric: false, disablePadding: false, label: 'Merchant' },
-  { id: 'amount', numeric: true, disablePadding: false, label: 'Amount' },
+  { id: 'amount_cents', numeric: true, disablePadding: false, label: 'Amount' },
   { id: 'notes', numeric: false, disablePadding: false, label: 'Notes' },
 ];
 
@@ -87,14 +87,14 @@ class Dashboard extends React.Component {
     orderBy: 'date',
     selected: [],
     data: [
-      createData(format(new Date(2018, 6, 21), 'MM/DD/YYYY'), 'Cindy Hawthorne', 'Food', 'Cost Vida', 35.64, ''),
-      createData(format(new Date(2018, 7, 29), 'MM/DD/YYYY'), 'Dave Johnson', 'Travel', 'Delta', 458.25, ''),
-      createData(format(new Date(2018, 8, 26), 'MM/DD/YYYY'), 'Peter Trimble', 'Food', 'JDawgs', 8.98, ''),
-      createData(format(new Date(2018, 9, 2), 'MM/DD/YYYY'), 'Kyle Smith', 'Training', 'Pluralsite', 118.85, ''),
-      createData(format(new Date(2018, 10, 14), 'MM/DD/YYYY'), 'Sarah Moore', 'Food', 'Arby\'s', 11.48, ''),
-      createData(format(new Date(2018, 10, 5), 'MM/DD/YYYY'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, ''),
-      createData(format(new Date(2018, 10, 13), 'MM/DD/YYYY'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, ''),
-      createData(format(new Date(), 'MM/DD/YYYY'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, '')
+      createData(format(new Date(2018, 6, 21), 'YYYY-MM-DD'), 'Cindy Hawthorne', 'Food', 'Cost Vida', 35.64, ''),
+      createData(format(new Date(2018, 7, 29), 'YYYY-MM-DD'), 'Dave Johnson', 'Travel', 'Delta', 458.25, ''),
+      createData(format(new Date(2018, 8, 26), 'YYYY-MM-DD'), 'Peter Trimble', 'Food', 'JDawgs', 8.98, ''),
+      createData(format(new Date(2018, 9, 2), 'YYYY-MM-DD'), 'Kyle Smith', 'Training', 'Pluralsite', 118.85, ''),
+      createData(format(new Date(2018, 10, 14), 'YYYY-MM-DD'), 'Sarah Moore', 'Food', 'Arby\'s', 11.48, ''),
+      createData(format(new Date(2018, 10, 5), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, ''),
+      createData(format(new Date(2018, 10, 13), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, ''),
+      createData(format(new Date(), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, '')
     ],
     page: 0,
     rowsPerPage: 5,
@@ -172,7 +172,7 @@ class Dashboard extends React.Component {
         currency -= lookup[i];
       }
     }
-    
+
     return roman;
   };
 
@@ -239,7 +239,7 @@ class Dashboard extends React.Component {
                           </TableCell>
                           <TableCell>{n.category}</TableCell>
                           <TableCell>{n.merchant}</TableCell>
-                          <TableCell numeric>{this.getCurrency(n.amount)}</TableCell>
+                          <TableCell numeric>{this.getCurrency(n.amount_cents)}</TableCell>
                           <TableCell>{n.notes}</TableCell>
                         </TableRow>
                       );

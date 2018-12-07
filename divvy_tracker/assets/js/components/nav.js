@@ -8,6 +8,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import StorageIcon from '@material-ui/icons/Storage';
 
 function ListItemLink(props) {
   return <ListItem button component={Link} {...props} />;
@@ -50,5 +51,11 @@ export const footerNav = (
       </ListItemIcon>
       <ListItemText primary="Upload" />
     </ListItemLink>
+    <ListItem button component="a" href="/transactions" target="blank">
+      <ListItemIcon>
+        <StorageIcon />
+      </ListItemIcon>
+      <ListItemText primary="Transactions" secondary="Data Interface" />
+    </ListItem>
   </div>
 );

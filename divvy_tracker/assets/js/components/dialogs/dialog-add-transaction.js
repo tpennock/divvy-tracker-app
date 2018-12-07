@@ -25,7 +25,7 @@ const newState = {
   date: format(new Date(), 'YYYY-MM-DD'),
   category: '',
   merchant: '',
-  amount:'',
+  amount_cents:'',
   notes: ''
 };
 
@@ -138,7 +138,7 @@ class DialogAddTransaction extends React.Component {
               margin="normal"
             />
             <TextField
-              id="amount"
+              id="amount_cents"
               label="Amount"
               type="number"
               required

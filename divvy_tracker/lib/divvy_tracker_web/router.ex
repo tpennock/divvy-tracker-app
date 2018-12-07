@@ -16,6 +16,7 @@ defmodule DivvyTrackerWeb.Router do
   scope "/", DivvyTrackerWeb do
     pipe_through :browser # Use the default browser stack
 
+    resources "/transactions", TransactionController
     get "/*path", PageController, :index
   end
 
