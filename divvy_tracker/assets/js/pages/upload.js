@@ -10,8 +10,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   buttonContainer: {
-    marginTop: 32,
-    marginBottom: 32
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2
   }
 });
 
@@ -49,10 +49,13 @@ class Upload extends React.Component {
             Batch Upload
           </Typography>
           <Typography variant="body1" gutterBottom color="textSecondary">
-            Upload an .csv file for bulk transaction importing
+            Upload an .csv file for bulk transaction importing. Format should match the following:
           </Typography>
-          <Typography variant="body1" gutterBottom color="textSecondary">
-            Format should follow 
+          <Typography variant="body2" gutterBottom color="textSecondary">
+            <em>MM/DD/YY,NAME,CATEGORY,MERCHANT,AMOUNT</em><br />
+            <em>MM/DD/YY,NAME,CATEGORY,MERCHANT,AMOUNT</em><br />
+            <em>MM/DD/YY,NAME,CATEGORY,MERCHANT,AMOUNT</em><br />
+            ...
           </Typography>
           <div className={classes.buttonContainer}>
             <Grid container spacing={32}>

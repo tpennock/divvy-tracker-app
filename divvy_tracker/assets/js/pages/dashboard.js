@@ -13,7 +13,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 // import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
-// import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 // import Checkbox from '@material-ui/core/Checkbox';
 // import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
@@ -25,13 +25,16 @@ import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 import DialogAddTransaction from '../components/dialogs/dialog-add-transaction';
 
 const styles = theme => ({
+  paper: {
+    marginBottom: theme.spacing.unit * 3
+  },
   table: {
     minWidth: 700,
   },
   fab: {
     position: 'absolute',
     // bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 3,
   }
 });
 
@@ -71,7 +74,7 @@ const rows = [
   { id: 'date', numeric: false, disablePadding: false, label: 'Date' },
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'category', numeric: false, disablePadding: false, label: 'Category' },
-  { id: 'merchant', numeric: false, disablePadding: true, label: 'Merchant' },
+  { id: 'merchant', numeric: false, disablePadding: false, label: 'Merchant' },
   { id: 'amount', numeric: true, disablePadding: false, label: 'Amount' },
   { id: 'notes', numeric: false, disablePadding: false, label: 'Notes' },
 ];
@@ -79,8 +82,9 @@ const rows = [
 class Dashboard extends React.Component {
   state = {
     dialogOpen: false, // this controls dialog visibility and will be passed -> child dialog
-    order: 'asc',
-    orderBy: 'category',
+    romanNumerals: false,
+    order: 'desc',
+    orderBy: 'date',
     selected: [],
     data: [
       createData(format(new Date(2018, 6, 21), 'MM/DD/YYYY'), 'Cindy Hawthorne', 'Food', 'Cost Vida', 35.64, ''),
@@ -150,6 +154,31 @@ class Dashboard extends React.Component {
     this.handleSort(event, property);
   };
 
+  // toggle to show currency as Roman numerals
+  toggleRomanNumerals = () => {
+    this.setState(state => ({ romanNumerals: !state.romanNumerals }));
+  };
+
+  // translate dollar into roman
+  //TODO: handle floats
+  translateCurrencyAsRomanNumeral = currency => {
+    const lookup = {M:1000,CM:900,D:500,CD:400,C:100,XC:90,L:50,XL:40,X:10,IX:9,V:5,IV:4,I:1};
+    let roman = '',
+    i;
+
+    for ( i in lookup ) {
+      while ( currency >= lookup[i] ) {
+        roman += i;
+        currency -= lookup[i];
+      }
+    }
+    
+    return roman;
+  };
+
+  // checks whether to translate and returns currency
+  getCurrency = currency => this.state.romanNumerals ? this.translateCurrencyAsRomanNumeral(currency) : currency;
+
   render() {
     const { classes } = this.props;
     const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.data.length - this.state.page * this.state.rowsPerPage);
@@ -164,8 +193,8 @@ class Dashboard extends React.Component {
               <AddIcon />
             </Fab>
           </Typography>
-          <div className={classes.tableContainer}>
-            <Paper className={classes.root}>
+          <div>
+            <Paper className={classes.paper}>
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
@@ -210,7 +239,7 @@ class Dashboard extends React.Component {
                           </TableCell>
                           <TableCell>{n.category}</TableCell>
                           <TableCell>{n.merchant}</TableCell>
-                          <TableCell numeric>{n.amount}</TableCell>
+                          <TableCell numeric>{this.getCurrency(n.amount)}</TableCell>
                           <TableCell>{n.notes}</TableCell>
                         </TableRow>
                       );
@@ -238,6 +267,15 @@ class Dashboard extends React.Component {
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
               />
             </Paper>
+            <Button 
+              color="secondary" 
+              variant="contained" 
+              aria-label="Show Roman Numerals" 
+              size="small" 
+              className={classes.fab} 
+              onClick={this.toggleRomanNumerals}>
+                Show Roman Numerals
+            </Button>
             <DialogAddTransaction open={this.state.dialogOpen} closeDialog={this.handleDialogToggle} />
           </div>
         </main>
