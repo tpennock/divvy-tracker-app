@@ -7,6 +7,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 function ListItemLink(props) {
   return <ListItem button component={Link} {...props} />;
@@ -43,6 +44,11 @@ export const mainNav = (
 
 export const footerNav = (
   <div>
-    TODO
+    <ListItemLink to="/upload">
+      <ListItemIcon>
+        <CloudUploadIcon />
+      </ListItemIcon>
+      <ListItemText primary="Upload" />
+    </ListItemLink>
   </div>
 );

@@ -15,13 +15,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 // components
-import { mainNav } from './nav';
+import { mainNav, footerNav } from './nav';
 
 // pages
 import Home from '../pages/home'
 import Dashboard from '../pages/dashboard'
 import People from '../pages/people'
 import Reports from '../pages/reports'
+import Upload from '../pages/upload'
 import NotFound from '../pages/not-found'
 
 const drawerWidth = 240;
@@ -155,6 +156,7 @@ class Main extends React.Component {
           <Divider />
           <List>{mainNav}</List>
           <Divider />
+          <List>{footerNav}</List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
@@ -163,6 +165,7 @@ class Main extends React.Component {
             <Route path='/dashboard' component={Dashboard}/>
             <Route path='/people' component={People}/>
             <Route path='/reports' component={Reports}/>
+            <Route path='/upload' component={Upload}/>
             <Route path='*' exact={true} component={NotFound} />
           </Switch>
         </main>
