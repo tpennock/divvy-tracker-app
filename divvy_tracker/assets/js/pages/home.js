@@ -35,42 +35,44 @@ const styles = theme => ({
   }
 });
 
-function Home(props) {
-  const { classes } = props;
-
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main>
-        <div className={classes.heroUnit}>
-          <div className={classes.heroContent}>
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Divvy Tracker
-            </Typography>
-            <Typography variant="h6" align="center" color="textSecondary" paragraph>
-              A collection of Divvy-inspired budgeting tools for categorizing transactions and 
-              keeping track of expenses. Built using React, Phoenix, Recharts and Webpack.
-            </Typography>
-            <div className={classes.heroButtons}>
-              <Grid container spacing={16} justify="center">
-                <Grid item>
-                  <Button variant="contained" color="primary" component={Link} to="/dashboard" >
-                    Go To Dashboard
-                    <ChevronRightIcon />
-                  </Button>
+class Home extends React.Component {
+  render() {
+    const { classes } = this.props;
+    
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main>
+          <div className={classes.heroUnit}>
+            <div className={classes.heroContent}>
+              <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+                Divvy Tracker
+              </Typography>
+              <Typography variant="h6" align="center" color="textSecondary" paragraph>
+                A collection of Divvy-inspired budgeting tools for categorizing transactions and 
+                keeping track of expenses. Built using React, Phoenix, Recharts and Webpack.
+              </Typography>
+              <div className={classes.heroButtons}>
+                <Grid container spacing={16} justify="center">
+                  <Grid item>
+                    <Button variant="contained" color="primary" component={Link} to="/dashboard" >
+                      Go To Dashboard
+                      <ChevronRightIcon />
+                    </Button>
+                  </Grid>
+                  {/* <Grid item>
+                    <Button variant="outlined" color="primary">
+                      Check out other stuff >
+                    </Button>
+                  </Grid> */}
                 </Grid>
-                {/* <Grid item>
-                  <Button variant="outlined" color="primary">
-                    Check out other stuff >
-                  </Button>
-                </Grid> */}
-              </Grid>
+              </div>
             </div>
           </div>
-        </div>
-      </main>
-    </React.Fragment>
-  );
+        </main>
+      </React.Fragment>
+    );
+  }
 }
 
 Home.propTypes = {

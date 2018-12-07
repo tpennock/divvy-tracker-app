@@ -35,36 +35,38 @@ const styles = theme => ({
   }
 });
 
-function NotFound(props) {
-  const { classes } = props;
+class NotFound extends React.Component {
+  render() {
+    const { classes } = this.props;
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main>
-        <div className={classes.heroUnit}>
-          <div className={classes.heroContent}>
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              404
-            </Typography>
-            <Typography variant="h6" align="center" color="textSecondary" paragraph>
-              Sorry, this page doesn't exist... yet :)
-            </Typography>
-            <div className={classes.heroButtons}>
-              <Grid container spacing={16} justify="center">
-                <Grid item>
-                  <Button variant="contained" color="primary" component={Link} to="/dashboard" >
-                    <ChevronLeftIcon />
-                    Go Back
-                  </Button>
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main>
+          <div className={classes.heroUnit}>
+            <div className={classes.heroContent}>
+              <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+                404
+              </Typography>
+              <Typography variant="h6" align="center" color="textSecondary" paragraph>
+                Sorry, this page doesn't exist... yet :)
+              </Typography>
+              <div className={classes.heroButtons}>
+                <Grid container spacing={16} justify="center">
+                  <Grid item>
+                    <Button variant="contained" color="primary" component={Link} to="/dashboard" >
+                      <ChevronLeftIcon />
+                      Go Back
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
+              </div>
             </div>
           </div>
-        </div>
-      </main>
-    </React.Fragment>
-  );
+        </main>
+      </React.Fragment>
+    );
+  }
 }
 
 NotFound.propTypes = {

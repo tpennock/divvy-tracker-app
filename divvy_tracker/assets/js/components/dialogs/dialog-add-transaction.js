@@ -152,7 +152,6 @@ class DialogAddTransaction extends React.Component {
               id="notes"
               label="Notes"
               multiline
-              required
               fullWidth
               rowsMax="4"
               className={classes.textField}

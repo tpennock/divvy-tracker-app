@@ -19,13 +19,12 @@ import { BrowserRouter } from 'react-router-dom';
 
 // Store
 import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux'
-import { reducer as formReducer } from 'redux-form'
 // import { Provider, connect } from 'react-redux'  
 // import thunk from 'redux-thunk'
 
 // import rootReducer from './reducers'
 const rootReducer = combineReducers({
-  
+
 })
 
 // const store = createStore(  
