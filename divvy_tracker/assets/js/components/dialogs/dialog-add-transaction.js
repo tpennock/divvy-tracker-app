@@ -15,12 +15,20 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
-import { uniqueId } from 'recharts/lib/util/DataUtils';
 
 const styles = theme => ({
 });
 
 // form data
+const newState = {
+  name: '',
+  date: format(new Date(), 'YYYY-MM-DD'),
+  category: '',
+  merchant: '',
+  amount:'',
+  notes: ''
+};
+
 const categories = [
   {
     value: 'food',
@@ -45,17 +53,12 @@ const categories = [
 ];
 
 class DialogAddTransaction extends React.Component {
-  state = {
-    name: '',
-    date: format(new Date(), 'YYYY-MM-DD'),
-    category: '',
-    merchant: '',
-    amount:'',
-    notes: ''
-  };
+  state = {};
 
   componentDidMount() {
-    const newState = this.state;
+    // intialize state on render 
+    // the reason for this is so we can store a clean object for resetting the form on cancel/add
+    this.setState(newState);
   }
 
   // communicate intent to close dialog back to parent via 'props.closeDialog'
@@ -65,8 +68,9 @@ class DialogAddTransaction extends React.Component {
   };
 
   addTransaction = () => {
+    debugger;
+    //TODO: validate -> save transaction data
     this.handleDialogToggle();
-    //TODO: save transaction data
   };
 
   handleChange = name => event => {
@@ -90,18 +94,20 @@ class DialogAddTransaction extends React.Component {
           <DialogContentText>
             Enter details below to track a new expense.
           </DialogContentText>
-          <form className={classes.container} noValidate autoComplete="off">
+          <form className={classes.container} autoComplete="off">
             <TextField
               id="name"
               label="Name"
-              fullWidth
               className={classes.textField}
+              required
               margin="normal"
+              fullWidth
             />
             <TextField
               id="date"
               label="Date"
               type="date"
+              required
               fullWidth
               defaultValue={this.state.date}
               className={classes.textField}
@@ -127,6 +133,7 @@ class DialogAddTransaction extends React.Component {
               id="merchant"
               label="Merchant"
               className={classes.textField}
+              required
               fullWidth
               margin="normal"
             />
@@ -134,6 +141,7 @@ class DialogAddTransaction extends React.Component {
               id="amount"
               label="Amount"
               type="number"
+              required
               fullWidth
               className={classes.textField}
               InputProps={{
@@ -144,6 +152,7 @@ class DialogAddTransaction extends React.Component {
               id="notes"
               label="Notes"
               multiline
+              required
               fullWidth
               rowsMax="4"
               className={classes.textField}

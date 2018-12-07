@@ -11,28 +11,54 @@ import css from "../styles/app.scss"
 //
 import "phoenix_html"
 
+
+// React
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-// import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux'
+
+// Store
+import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux'
+import { reducer as formReducer } from 'redux-form'
 // import { Provider, connect } from 'react-redux'  
 // import thunk from 'redux-thunk'
 
-// Components
-import Main from "./components/main.js";
-
 // import rootReducer from './reducers'
+const rootReducer = combineReducers({
+  
+})
 
 // const store = createStore(  
 //   rootReducer,
 //   applyMiddleware(thunk)
 // )
 
+// material-ui theme overrides
+import { createMuiTheme } from '@material-ui/core/styles';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { green, purple } from './components/colors'
+
+// Divvy theme
+const divvyTheme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+  },
+  palette: {
+    primary: green,
+    secondary: purple,
+  },
+});
+
+// Components
+import Main from "./components/main";
+
 export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Main />
+        <MuiThemeProvider theme={divvyTheme}>
+          <Main />
+        </MuiThemeProvider>
       </div>
     )
   }

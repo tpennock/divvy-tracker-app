@@ -7,6 +7,7 @@ import YAxis from 'recharts/lib/cartesian/YAxis';
 import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
 import Tooltip from 'recharts/lib/component/Tooltip';
 import Legend from 'recharts/lib/component/Legend';
+import { green, purple } from '../colors'
 
 const data = [
   { name: 'Mon', Expenses: 2200, Orders: 3400 },
@@ -28,8 +29,8 @@ function AreaGraph() {
         <CartesianGrid vertical={false} strokeDasharray="3 3" />
         <Tooltip />
         <Legend />
-        <Area type="monotone" dataKey="Expenses" stroke="#8884d8" fill="#8884d8" stackId="1" />
-        <Area type="monotone" dataKey="Orders" stroke="#82ca9d" fill="#82ca9d" stackId="1" activeDot={{ r: 8 }} />
+        <Area type="monotone" dataKey="Expenses" stroke={green.main} fill={green.main} stackId="1" />
+        <Area type="monotone" dataKey="Orders" stroke={purple.main} fill={purple.main} stackId="1" activeDot={{ r: 8 }} />
       </AreaChart>
     </ResponsiveContainer>
   );
