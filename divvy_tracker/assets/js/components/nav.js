@@ -28,11 +28,11 @@ export const mainNav = (
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemLink>
-    <ListItemLink to="/people">
+    <ListItemLink to="/users">
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="People" />
+      <ListItemText primary="Users" />
     </ListItemLink>
     <ListItemLink to="/reports">
       <ListItemIcon>
@@ -51,7 +51,7 @@ export const footerNav = (
       </ListItemIcon>
       <ListItemText primary="Upload" />
     </ListItemLink>
-    <ListItem button component="a" href="/transactions" target="blank">
+    <ListItem button component="a" href="/api/transactions" target="blank">
       <ListItemIcon>
         <StorageIcon />
       </ListItemIcon>

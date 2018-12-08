@@ -18,16 +18,22 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
 // Store
-import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux'
-import { Provider, connect } from 'react-redux'
-import thunk from 'redux-thunk'
+// import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux'
+// import { Provider, connect } from 'react-redux'
+// import thunk from 'redux-thunk'
 
-import rootReducer from './reducers'
+// import rootReducer from './reducers'
 
-const store = createStore(  
-  rootReducer,
-  applyMiddleware(thunk)
-)
+// const store = createStore(  
+//   rootReducer,
+//   applyMiddleware(thunk)
+// )
+
+// store.dispatch({
+//   type: 'TRANSACTIONS',
+// })
+
+// console.log(store.getState())
 
 // material-ui theme overrides
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -61,11 +67,11 @@ export default class App extends React.Component {
 }
 
 ReactDOM.render(
-  <Provider store={store}>
+  // <Provider store={store}>
     <BrowserRouter>
       <App/>
     </BrowserRouter>
-  </Provider>
+  // </Provider>
   , 
   document.getElementById('app')
 )

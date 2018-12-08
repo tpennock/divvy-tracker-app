@@ -3,9 +3,9 @@ defmodule DivvyTrackerWeb.TransactionControllerTest do
 
   alias DivvyTracker.Expenses
 
-  @create_attrs %{amount_cents: 42, category: "some category", date: "some date", merchant: "some merchant", name: "some name", notes: "some notes"}
-  @update_attrs %{amount_cents: 43, category: "some updated category", date: "some updated date", merchant: "some updated merchant", name: "some updated name", notes: "some updated notes"}
-  @invalid_attrs %{amount_cents: nil, category: nil, date: nil, merchant: nil, name: nil, notes: nil}
+  @create_attrs %{amount: "120.5", category: "some category", date: ~D[2010-04-17], merchant: "some merchant", name: "some name", notes: "some notes"}
+  @update_attrs %{amount: "456.7", category: "some updated category", date: ~D[2011-05-18], merchant: "some updated merchant", name: "some updated name", notes: "some updated notes"}
+  @invalid_attrs %{amount: nil, category: nil, date: nil, merchant: nil, name: nil, notes: nil}
 
   def fixture(:transaction) do
     {:ok, transaction} = Expenses.create_transaction(@create_attrs)

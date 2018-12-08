@@ -24,6 +24,9 @@ import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 import DialogAddTransaction from '../components/dialogs/dialog-add-transaction';
 
+// import Transactions from '../Transactions';
+import API from '../api';
+
 const styles = theme => ({
   paper: {
     marginBottom: theme.spacing.unit * 3
@@ -65,9 +68,9 @@ function getSorting(order, orderBy) {
 
 // data
 let id = 0;
-function createData(date, name, category, merchant, amount_cents, notes) {
+function createData(date, name, category, merchant, amount, notes) {
   id += 1;
-  return { id, date, name, category, merchant, amount_cents, notes };
+  return { id, date, name, category, merchant, amount, notes };
 }
 
 const rows = [
@@ -75,7 +78,7 @@ const rows = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'category', numeric: false, disablePadding: false, label: 'Category' },
   { id: 'merchant', numeric: false, disablePadding: false, label: 'Merchant' },
-  { id: 'amount_cents', numeric: true, disablePadding: false, label: 'Amount' },
+  { id: 'amount', numeric: true, disablePadding: false, label: 'Amount' },
   { id: 'notes', numeric: false, disablePadding: false, label: 'Notes' },
 ];
 
@@ -86,16 +89,17 @@ class Dashboard extends React.Component {
     order: 'desc',
     orderBy: 'date',
     selected: [],
-    data: [
-      createData(format(new Date(2018, 6, 21), 'YYYY-MM-DD'), 'Cindy Hawthorne', 'Food', 'Cost Vida', 35.64, ''),
-      createData(format(new Date(2018, 7, 29), 'YYYY-MM-DD'), 'Dave Johnson', 'Travel', 'Delta', 458.25, ''),
-      createData(format(new Date(2018, 8, 26), 'YYYY-MM-DD'), 'Peter Trimble', 'Food', 'JDawgs', 8.98, ''),
-      createData(format(new Date(2018, 9, 2), 'YYYY-MM-DD'), 'Kyle Smith', 'Training', 'Pluralsite', 118.85, ''),
-      createData(format(new Date(2018, 10, 14), 'YYYY-MM-DD'), 'Sarah Moore', 'Food', 'Arby\'s', 11.48, ''),
-      createData(format(new Date(2018, 10, 5), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, ''),
-      createData(format(new Date(2018, 10, 13), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, ''),
-      createData(format(new Date(), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, '')
-    ],
+    data: [],
+    // data: [
+    //   createData(format(new Date(2018, 6, 21), 'YYYY-MM-DD'), 'Cindy Hawthorne', 'Food', 'Cost Vida', 35.64, ''),
+    //   createData(format(new Date(2018, 7, 29), 'YYYY-MM-DD'), 'Dave Johnson', 'Travel', 'Delta', 458.25, ''),
+    //   createData(format(new Date(2018, 8, 26), 'YYYY-MM-DD'), 'Peter Trimble', 'Food', 'JDawgs', 8.98, ''),
+    //   createData(format(new Date(2018, 9, 2), 'YYYY-MM-DD'), 'Kyle Smith', 'Training', 'Pluralsite', 118.85, ''),
+    //   createData(format(new Date(2018, 10, 14), 'YYYY-MM-DD'), 'Sarah Moore', 'Food', 'Arby\'s', 11.48, ''),
+    //   createData(format(new Date(2018, 10, 5), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, ''),
+    //   createData(format(new Date(2018, 10, 13), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, ''),
+    //   createData(format(new Date(), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, '')
+    // ],
     page: 0,
     rowsPerPage: 5,
   };
@@ -147,6 +151,11 @@ class Dashboard extends React.Component {
     this.setState(state => ({ dialogOpen: !state.dialogOpen }));
   };
 
+  updateTransactionList = (transactions) => {
+    this.setState({ data: transactions });
+    console.info(this.state);
+  };
+
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   // wrapper call to create our sort handler -> Render methods should be a pure function of props and state.
@@ -179,6 +188,16 @@ class Dashboard extends React.Component {
   // checks whether to translate and returns currency
   getCurrency = currency => this.state.romanNumerals ? this.translateCurrencyAsRomanNumeral(currency) : currency;
 
+  hasData = () => this.state.data && this.state.data.length > 0;
+
+  componentWillMount() {
+    API.getTransactions().then(response => {
+      this.setState({ data: response.data.transactions })
+    }).then(error => {
+      //TODO: trigger an alert
+    });
+  };
+
   render() {
     const { classes } = this.props;
     const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.data.length - this.state.page * this.state.rowsPerPage);
@@ -194,6 +213,7 @@ class Dashboard extends React.Component {
             </Fab>
           </Typography>
           <div>
+            {this.hasData() ? (
             <Paper className={classes.paper}>
               <Table className={classes.table}>
                 <TableHead>
@@ -239,7 +259,7 @@ class Dashboard extends React.Component {
                           </TableCell>
                           <TableCell>{n.category}</TableCell>
                           <TableCell>{n.merchant}</TableCell>
-                          <TableCell numeric>{this.getCurrency(n.amount_cents)}</TableCell>
+                          <TableCell numeric>{this.getCurrency(n.amount)}</TableCell>
                           <TableCell>{n.notes}</TableCell>
                         </TableRow>
                       );
@@ -267,16 +287,24 @@ class Dashboard extends React.Component {
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
               />
             </Paper>
-            <Button 
-              color="secondary" 
-              variant="contained" 
-              aria-label="Show Roman Numerals" 
-              size="small" 
-              className={classes.fab} 
-              onClick={this.toggleRomanNumerals}>
-                Show Roman Numerals
-            </Button>
-            <DialogAddTransaction open={this.state.dialogOpen} closeDialog={this.handleDialogToggle} />
+            ) : (
+              <Typography variant="body1" gutterBottom>
+                No Transaction data found. Be the first to add an expense item by clicking on the "+" button.
+              </Typography>
+            )}
+            {this.hasData() &&
+              <Button 
+                color="secondary" 
+                variant="contained" 
+                aria-label="Show Roman Numerals" 
+                size="small" 
+                className={classes.fab} 
+                onClick={this.toggleRomanNumerals}>
+                  Show Roman Numerals
+              </Button>
+            }
+            {/* <Transactions /> */}
+            <DialogAddTransaction open={this.state.dialogOpen} addedNew={this.updateTransactionList} closeDialog={this.handleDialogToggle} />
           </div>
         </main>
       </div>

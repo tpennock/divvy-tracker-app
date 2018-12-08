@@ -20,7 +20,7 @@ import { mainNav, footerNav } from './nav';
 // pages
 import Home from '../pages/home'
 import Dashboard from '../pages/dashboard'
-import People from '../pages/people'
+import Users from '../pages/users'
 import Reports from '../pages/reports'
 import Upload from '../pages/upload'
 import NotFound from '../pages/not-found'
@@ -163,7 +163,7 @@ class Main extends React.Component {
           <Switch>
             <Route exact path='/' component={Home}/>
             <Route path='/dashboard' component={Dashboard}/>
-            <Route path='/people' component={People}/>
+            <Route path='/users' component={Users}/>
             <Route path='/reports' component={Reports}/>
             <Route path='/upload' component={Upload}/>
             <Route path='*' exact={true} component={NotFound} />

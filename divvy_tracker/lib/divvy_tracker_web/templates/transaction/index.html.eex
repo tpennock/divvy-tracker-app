@@ -7,7 +7,7 @@
       <th>Name</th>
       <th>Category</th>
       <th>Merchant</th>
-      <th>Amount cents</th>
+      <th>Amount</th>
       <th>Notes</th>
 
       <th></th>
@@ -20,7 +20,7 @@
       <td><%= transaction.name %></td>
       <td><%= transaction.category %></td>
       <td><%= transaction.merchant %></td>
-      <td><%= transaction.amount_cents %></td>
+      <td><%= transaction.amount %></td>
       <td><%= transaction.notes %></td>
 
       <td>

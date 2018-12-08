@@ -23,8 +23,8 @@
   </li>
 
   <li>
-    <strong>Amount cents:</strong>
-    <%= @transaction.amount_cents %>
+    <strong>Amount:</strong>
+    <%= @transaction.amount %>
   </li>
 
   <li>

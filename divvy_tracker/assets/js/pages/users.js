@@ -32,7 +32,7 @@ const data = [
   createData('Andrew Thomas', 650.42, 1000.00)
 ];
 
-class People extends React.Component {
+class Users extends React.Component {
   render() {
     const { classes } = this.props;
 
@@ -41,7 +41,10 @@ class People extends React.Component {
         <CssBaseline />
         <main className={classes.content}>
           <Typography variant="h4" gutterBottom component="h2">
-            People
+            Users
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Coming soon... (The data represented here is entirely fake)
           </Typography>
           <div className={classes.tableContainer}>
             <Paper className={classes.root}>
@@ -77,8 +80,8 @@ class People extends React.Component {
   }
 }
 
-People.propTypes = {
+Users.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(People);
+export default withStyles(styles)(Users);

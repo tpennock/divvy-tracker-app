@@ -3,11 +3,11 @@ defmodule DivvyTracker.Repo.Migrations.CreateTransactions do
 
   def change do
     create table(:transactions) do
-      add :date, :string
+      add :date, :date
       add :name, :string
       add :category, :string
       add :merchant, :string
-      add :amount_cents, :integer
+      add :amount, :decimal
       add :notes, :string
 
       timestamps()

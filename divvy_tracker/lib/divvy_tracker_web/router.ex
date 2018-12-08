@@ -13,15 +13,21 @@ defmodule DivvyTrackerWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # api stack
+  scope "/api", DivvyTrackerWeb do
+    pipe_through :api
+
+    resources "/transactions", TransactionController
+    # get "/transactions", TransactionController, :index
+    post "/transactions", TransactionController, :create
+    # get "/transactions/:id", TransactionController, :show
+  end
+
+  # application stack
   scope "/", DivvyTrackerWeb do
     pipe_through :browser # Use the default browser stack
 
-    resources "/transactions", TransactionController
     get "/*path", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", DivvyTrackerWeb do
-  #   pipe_through :api
-  # end
 end

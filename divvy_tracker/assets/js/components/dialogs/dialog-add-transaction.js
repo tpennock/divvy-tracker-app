@@ -16,6 +16,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
+import API from '../../api';
+
 const styles = theme => ({
 });
 
@@ -25,7 +27,7 @@ const newState = {
   date: format(new Date(), 'YYYY-MM-DD'),
   category: '',
   merchant: '',
-  amount_cents:'',
+  amount:'',
   notes: ''
 };
 
@@ -67,14 +69,26 @@ class DialogAddTransaction extends React.Component {
     this.setState(newState); // clear form data
   };
 
+  successFunc = (response) => {
+    this.props.addedNew(response.data.transactions);
+    //TODO: IMPLEMENT THE STORE: update store for response.data.transactions
+  };
+
+  failFunc = (error) => {
+    //TODO: trigger an alert
+  };
+
   addTransaction = () => {
-    debugger;
-    //TODO: validate -> save transaction data
+    const payload = {
+      transaction: this.state
+    }
+    API.createTransaction(payload)
+      .then(response => this.successFunc(response))
+      .then(error => this.failFunc(error))
     this.handleDialogToggle();
   };
 
   handleChange = name => event => {
-    console.info(this.state, name, event.target.value)
     this.setState({ [name]: event.target.value });
   };
 
@@ -100,6 +114,7 @@ class DialogAddTransaction extends React.Component {
               label="Name"
               className={classes.textField}
               required
+              onChange={this.handleChange('name')}
               margin="normal"
               fullWidth
             />
@@ -109,6 +124,7 @@ class DialogAddTransaction extends React.Component {
               type="date"
               required
               fullWidth
+              onChange={this.handleChange('date')}
               defaultValue={this.state.date}
               className={classes.textField}
               InputLabelProps={{
@@ -134,14 +150,16 @@ class DialogAddTransaction extends React.Component {
               label="Merchant"
               className={classes.textField}
               required
+              onChange={this.handleChange('merchant')}
               fullWidth
               margin="normal"
             />
             <TextField
-              id="amount_cents"
+              id="amount"
               label="Amount"
               type="number"
               required
+              onChange={this.handleChange('amount')}
               fullWidth
               className={classes.textField}
               InputProps={{
@@ -151,6 +169,7 @@ class DialogAddTransaction extends React.Component {
             <TextField
               id="notes"
               label="Notes"
+              onChange={this.handleChange('notes')}
               multiline
               fullWidth
               rowsMax="4"

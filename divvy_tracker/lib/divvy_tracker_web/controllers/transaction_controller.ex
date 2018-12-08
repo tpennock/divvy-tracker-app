@@ -5,9 +5,8 @@ defmodule DivvyTrackerWeb.TransactionController do
   alias DivvyTracker.Expenses.Transaction
 
   def index(conn, _params) do
-    transactions = Repo.all()
-    # transactions = Expenses.list_transactions()
-    render(conn, "index.html", transactions: transactions)
+    transactions = Expenses.list_transactions()
+    render(conn, "index.json", transactions: transactions)
   end
 
   def new(conn, _params) do
@@ -18,9 +17,11 @@ defmodule DivvyTrackerWeb.TransactionController do
   def create(conn, %{"transaction" => transaction_params}) do
     case Expenses.create_transaction(transaction_params) do
       {:ok, transaction} ->
-        conn
-        |> put_flash(:info, "Transaction created successfully.")
-        |> redirect(to: Routes.transaction_path(conn, :show, transaction))
+        # conn
+        # |> put_flash(:info, "Transaction created successfully.")
+        # |> redirect(to: Routes.transaction_path(conn, :show, transaction))
+        transactions = Expenses.list_transactions()
+        render conn, "index.json", transactions: transactions
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -29,7 +30,7 @@ defmodule DivvyTrackerWeb.TransactionController do
 
   def show(conn, %{"id" => id}) do
     transaction = Expenses.get_transaction!(id)
-    render(conn, "show.html", transaction: transaction)
+    render(conn, "show.json", transaction: transaction)
   end
 
   def edit(conn, %{"id" => id}) do
