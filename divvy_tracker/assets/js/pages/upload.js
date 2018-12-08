@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { withStyles } from '@material-ui/core/styles';
 
+import API from '../api';
+
 const styles = theme => ({
   buttonContainer: {
     marginTop: theme.spacing.unit * 2,
@@ -15,7 +17,19 @@ const styles = theme => ({
   }
 });
 
+const csvFieldLookup = ["date", "name", "category", "merchant", "amount", "notes"];
+
 class Upload extends React.Component {
+  successFunc = (response) => {
+    debugger;
+    //TODO: IMPLEMENT THE STORE: update store for response.data.transactions
+  };
+
+  failFunc = (error) => {
+    debugger;
+    //TODO: trigger an alert
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -29,13 +43,18 @@ class Upload extends React.Component {
         const csvData = PapaParse.parse(
           event.target.result,
           {
+            header: true,
             error: function() {
               console.info("error")
             }  
           }
         );
+        console.info(csvData);
         //TODO: save data to db
         // onFileLoaded(csvData.data, filename);
+        API.createBatchTransactions(event.target.result)
+        .then(response => this.successFunc(response))
+        .then(error => this.failFunc(error))
       };
 
       reader.readAsText(e.target.files[0]);
@@ -52,9 +71,9 @@ class Upload extends React.Component {
             Upload an .csv file for bulk transaction importing. Format should match the following:
           </Typography>
           <Typography variant="body2" gutterBottom color="textSecondary">
-            <em>MM/DD/YY,NAME,CATEGORY,MERCHANT,AMOUNT</em><br />
-            <em>MM/DD/YY,NAME,CATEGORY,MERCHANT,AMOUNT</em><br />
-            <em>MM/DD/YY,NAME,CATEGORY,MERCHANT,AMOUNT</em><br />
+            <em>date,name,category,merchant,amount,notes</em><br />
+            <em>MM/DD/YY,NAME,CATEGORY,MERCHANT,AMOUNT,NOTES</em><br />
+            <em>MM/DD/YY,NAME,CATEGORY,MERCHANT,AMOUNT,NOTES</em><br />
             ...
           </Typography>
           <div className={classes.buttonContainer}>

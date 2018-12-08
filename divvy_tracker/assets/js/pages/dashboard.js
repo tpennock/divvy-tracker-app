@@ -15,9 +15,9 @@ import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 // import Checkbox from '@material-ui/core/Checkbox';
-// import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
-// import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from '@material-ui/icons/Delete';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 // import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
@@ -33,6 +33,11 @@ const styles = theme => ({
   },
   table: {
     minWidth: 700,
+  },
+  row: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.background.default,
+    },
   },
   fab: {
     position: 'absolute',
@@ -67,19 +72,14 @@ function getSorting(order, orderBy) {
 }
 
 // data
-let id = 0;
-function createData(date, name, category, merchant, amount, notes) {
-  id += 1;
-  return { id, date, name, category, merchant, amount, notes };
-}
-
 const rows = [
-  { id: 'date', numeric: false, disablePadding: false, label: 'Date' },
-  { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
-  { id: 'category', numeric: false, disablePadding: false, label: 'Category' },
-  { id: 'merchant', numeric: false, disablePadding: false, label: 'Merchant' },
-  { id: 'amount', numeric: true, disablePadding: false, label: 'Amount' },
-  { id: 'notes', numeric: false, disablePadding: false, label: 'Notes' },
+  { id: 'name', numeric: false, label: 'Name' },
+  { id: 'date', numeric: false, label: 'Date' },
+  { id: 'category', numeric: false, label: 'Category' },
+  { id: 'merchant', numeric: false, label: 'Merchant' },
+  { id: 'amount', numeric: true, label: 'Amount' },
+  { id: 'notes', numeric: false, label: 'Notes' },
+  { id: 'delete', numeric: false, component: Button, label: 'Delete?' },
 ];
 
 class Dashboard extends React.Component {
@@ -88,18 +88,7 @@ class Dashboard extends React.Component {
     romanNumerals: false,
     order: 'desc',
     orderBy: 'date',
-    selected: [],
     data: [],
-    // data: [
-    //   createData(format(new Date(2018, 6, 21), 'YYYY-MM-DD'), 'Cindy Hawthorne', 'Food', 'Cost Vida', 35.64, ''),
-    //   createData(format(new Date(2018, 7, 29), 'YYYY-MM-DD'), 'Dave Johnson', 'Travel', 'Delta', 458.25, ''),
-    //   createData(format(new Date(2018, 8, 26), 'YYYY-MM-DD'), 'Peter Trimble', 'Food', 'JDawgs', 8.98, ''),
-    //   createData(format(new Date(2018, 9, 2), 'YYYY-MM-DD'), 'Kyle Smith', 'Training', 'Pluralsite', 118.85, ''),
-    //   createData(format(new Date(2018, 10, 14), 'YYYY-MM-DD'), 'Sarah Moore', 'Food', 'Arby\'s', 11.48, ''),
-    //   createData(format(new Date(2018, 10, 5), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, ''),
-    //   createData(format(new Date(2018, 10, 13), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, ''),
-    //   createData(format(new Date(), 'YYYY-MM-DD'), 'Andrew Thomas', 'Office Snacks', 'Costco', 258.54, '')
-    // ],
     page: 0,
     rowsPerPage: 5,
   };
@@ -113,28 +102,6 @@ class Dashboard extends React.Component {
     }
 
     this.setState({ order, orderBy });
-  };
-
-  // assigns selected column
-  handleClick = (event, id) => {
-    const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    this.setState({ selected: newSelected });
   };
 
   // setState for page
@@ -153,10 +120,18 @@ class Dashboard extends React.Component {
 
   updateTransactionList = (transactions) => {
     this.setState({ data: transactions });
-    console.info(this.state);
   };
 
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  handleDelete = (id) => {
+    debugger;
+    API.deleteTransaction(id)
+      .then(response => {
+        this.setState({ data: response.data.transactions })
+      })
+      .then(error => {
+        //TODO: trigger an alert
+      });
+  }
 
   // wrapper call to create our sort handler -> Render methods should be a pure function of props and state.
   createSortHandler = property => event => {
@@ -168,17 +143,31 @@ class Dashboard extends React.Component {
     this.setState(state => ({ romanNumerals: !state.romanNumerals }));
   };
 
-  // translate dollar into roman
-  //TODO: handle floats
+  //TODO: move into utils.js
+  // translate whole dollar into roman numeral
   translateCurrencyAsRomanNumeral = currency => {
-    const lookup = {M:1000,CM:900,D:500,CD:400,C:100,XC:90,L:50,XL:40,X:10,IX:9,V:5,IV:4,I:1};
+    const romanNumeralVals = {
+      M: 1000,
+      CM: 900,
+      D: 500,
+      CD: 400,
+      C: 100,
+      XC: 90,
+      L: 50,
+      XL: 40,
+      X: 10,
+      IX: 9,
+      V: 5,
+      IV: 4,
+      I: 1
+    };
     let roman = '',
     i;
 
-    for ( i in lookup ) {
-      while ( currency >= lookup[i] ) {
+    for ( i in romanNumeralVals ) {
+      while ( currency >= romanNumeralVals[i] ) {
         roman += i;
-        currency -= lookup[i];
+        currency -= romanNumeralVals[i];
       }
     }
 
@@ -191,11 +180,13 @@ class Dashboard extends React.Component {
   hasData = () => this.state.data && this.state.data.length > 0;
 
   componentWillMount() {
-    API.getTransactions().then(response => {
-      this.setState({ data: response.data.transactions })
-    }).then(error => {
-      //TODO: trigger an alert
-    });
+    API.getTransactions()
+      .then(response => {
+        this.setState({ data: response.data.transactions })
+      })
+      .then(error => {
+        //TODO: trigger an alert
+      });
   };
 
   render() {
@@ -223,7 +214,7 @@ class Dashboard extends React.Component {
                         <TableCell
                           key={row.id}
                           numeric={row.numeric}
-                          padding={row.disablePadding ? 'none' : 'default'}
+                          padding="dense"
                           sortDirection={this.state.orderBy === row.id ? this.state.order : false}
                         >
                           <TableSortLabel
@@ -242,25 +233,21 @@ class Dashboard extends React.Component {
                   {stableSort(this.state.data, getSorting(this.state.order, this.state.orderBy))
                     .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                     .map(n => {
-                      const isSelected = this.isSelected(n.id);
                       return (
-                        <TableRow
-                          hover
-                          onClick={event => this.handleClick(event, n.id)}
-                          role="checkbox"
-                          aria-checked={isSelected}
-                          tabIndex={-1}
-                          key={n.id}
-                          selected={isSelected}
-                        >
-                          <TableCell>{n.date}</TableCell>
-                          <TableCell component="th" scope="row" padding="none">
+                        <TableRow key={n.id} className={classes.row}>
+                          <TableCell component="th" scope="row" padding="dense">
                             {n.name}
                           </TableCell>
-                          <TableCell>{n.category}</TableCell>
-                          <TableCell>{n.merchant}</TableCell>
-                          <TableCell numeric>{this.getCurrency(n.amount)}</TableCell>
-                          <TableCell>{n.notes}</TableCell>
+                          <TableCell padding="dense">{n.date}</TableCell>
+                          <TableCell padding="dense">{n.category}</TableCell>
+                          <TableCell padding="dense">{n.merchant}</TableCell>
+                          <TableCell padding="dense" numeric>{this.getCurrency(n.amount)}</TableCell>
+                          <TableCell padding="dense">{n.notes}</TableCell>
+                          <TableCell padding="dense">
+                            <IconButton color="secondary" aria-label="Delete" size="small" onClick={() => this.handleDelete(n.id)}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </TableCell>
                         </TableRow>
                       );
                     })}
@@ -300,7 +287,7 @@ class Dashboard extends React.Component {
                 size="small" 
                 className={classes.fab} 
                 onClick={this.toggleRomanNumerals}>
-                  Show Roman Numerals
+                  {this.state.romanNumerals ? "Hide" : "Show"} Roman Numerals
               </Button>
             }
             {/* <Transactions /> */}

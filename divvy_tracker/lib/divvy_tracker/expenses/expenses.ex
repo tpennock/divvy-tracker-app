@@ -4,6 +4,7 @@ defmodule DivvyTracker.Expenses do
   """
 
   import Ecto.Query, warn: false
+  alias Ecto.Multi
   alias DivvyTracker.Repo
 
   alias DivvyTracker.Expenses.Transaction
@@ -53,6 +54,22 @@ defmodule DivvyTracker.Expenses do
     %Transaction{}
     |> Transaction.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Creates a batch of transactions.
+
+  ## Examples
+
+  """
+  def create_batch_transactions(transactions \\ %{}) do
+    Enum.reduce(transactions, Multi.new(), fn transaction, multi ->
+      Multi.insert(
+        multi,
+        {:transaction, transaction.id},
+        create_transaction(transaction)
+      )
+    end)
   end
 
   @doc """

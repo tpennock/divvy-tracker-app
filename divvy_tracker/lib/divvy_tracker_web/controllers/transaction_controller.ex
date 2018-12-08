@@ -20,11 +20,27 @@ defmodule DivvyTrackerWeb.TransactionController do
         # conn
         # |> put_flash(:info, "Transaction created successfully.")
         # |> redirect(to: Routes.transaction_path(conn, :show, transaction))
+
+        # render conn, "index.json", transaction: transaction
         transactions = Expenses.list_transactions()
         render conn, "index.json", transactions: transactions
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+      # {:error, %Ecto.Changeset{} = changeset} ->
+      #   render(conn, "new.html", changeset: changeset)
+    end
+  end
+
+  def create_batch(conn, %{"transaction" => transaction_list}) do
+    case Expenses.create_batch_transactions(transaction_list) do
+      {:ok, transaction} ->
+        # conn
+        # |> put_flash(:info, "Transaction created successfully.")
+        # |> redirect(to: Routes.transaction_path(conn, :show, transaction))
+        transactions = Expenses.list_transactions()
+        render conn, "index.json", transactions: transactions
+
+      # {:error, %Ecto.Changeset{} = changeset} ->
+      #   render(conn, "new.html", changeset: changeset)
     end
   end
 
@@ -57,8 +73,10 @@ defmodule DivvyTrackerWeb.TransactionController do
     transaction = Expenses.get_transaction!(id)
     {:ok, _transaction} = Expenses.delete_transaction(transaction)
 
-    conn
-    |> put_flash(:info, "Transaction deleted successfully.")
-    |> redirect(to: Routes.transaction_path(conn, :index))
+    transactions = Expenses.list_transactions()
+     render conn, "index.json", transactions: transactions
+    # conn
+    # |> put_flash(:info, "Transaction deleted successfully.")
+    # |> redirect(to: Routes.transaction_path(conn, :index))
   end
 end

@@ -17,10 +17,12 @@ defmodule DivvyTrackerWeb.Router do
   scope "/api", DivvyTrackerWeb do
     pipe_through :api
 
-    resources "/transactions", TransactionController
-    # get "/transactions", TransactionController, :index
+    # resources "/transactions", TransactionController
+    get "/transactions", TransactionController, :index
     post "/transactions", TransactionController, :create
-    # get "/transactions/:id", TransactionController, :show
+    post "/transactions/batch", TransactionController, :create_batch
+    get "/transactions/:id", TransactionController, :show
+    delete "/transactions/:id", TransactionController, :delete
   end
 
   # application stack
