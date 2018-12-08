@@ -123,7 +123,6 @@ class Dashboard extends React.Component {
   };
 
   handleDelete = (id) => {
-    debugger;
     API.deleteTransaction(id)
       .then(response => {
         this.setState({ data: response.data.transactions })

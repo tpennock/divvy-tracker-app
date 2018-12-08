@@ -21,12 +21,10 @@ const csvFieldLookup = ["date", "name", "category", "merchant", "amount", "notes
 
 class Upload extends React.Component {
   successFunc = (response) => {
-    debugger;
     //TODO: IMPLEMENT THE STORE: update store for response.data.transactions
   };
 
   failFunc = (error) => {
-    debugger;
     //TODO: trigger an alert
   };
 
