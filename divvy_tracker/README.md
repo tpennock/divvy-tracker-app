@@ -1,10 +1,10 @@
 # DivvyTracker
 
-To start your Phoenix server:
+To start the Phoenix server:
 
   * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `cd assets && npm install`
+  * Create and migrate the database with `mix ecto.setup`
+  * Install Node.js dependencies with `cd assets && yarn install`
   * Start Phoenix endpoint with `mix phx.server`
   * View routes `mix phx.routes`
 

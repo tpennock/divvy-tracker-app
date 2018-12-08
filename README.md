@@ -2,6 +2,13 @@
 
 React-based, single-page app for categorizing transactions and keeping track of expenses.
 
+## Feature Wish List
+
+- Implement `react-redux` and all of that good central state management ()
+- Unit tests
+- `/users` page with real data
+- More documentation
+
 ## Technical Exercise
 
 Create a simple budgeting application that allows users to enter and

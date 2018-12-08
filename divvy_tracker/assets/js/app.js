@@ -17,6 +17,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
+//TODO: IMPLEMENT THE STORE AND ALL OF ITS CENTRAL STATE MANAGEMENT GOODNESS
 // Store
 // import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux'
 // import { Provider, connect } from 'react-redux'
