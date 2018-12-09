@@ -48,11 +48,15 @@ class Upload extends React.Component {
           }
         );
         console.info(csvData);
+        const payload = {
+          transactions: csvData.data
+        }
+        console.info(payload);
         //TODO: save data to db
         // onFileLoaded(csvData.data, filename);
-        API.createBatchTransactions(event.target.result)
-        .then(response => this.successFunc(response))
-        .then(error => this.failFunc(error))
+        API.createBatchTransactions(payload)
+          .then(response => this.successFunc(response))
+          .then(error => this.failFunc(error))
       };
 
       reader.readAsText(e.target.files[0]);
@@ -70,8 +74,8 @@ class Upload extends React.Component {
           </Typography>
           <Typography variant="body2" gutterBottom color="textSecondary">
             <em>date,name,category,merchant,amount,notes</em><br />
-            <em>MM/DD/YY,NAME,CATEGORY,MERCHANT,AMOUNT,NOTES</em><br />
-            <em>MM/DD/YY,NAME,CATEGORY,MERCHANT,AMOUNT,NOTES</em><br />
+            <em>YYYY-MM-DD,NAME,CATEGORY,MERCHANT,AMOUNT,NOTES</em><br />
+            <em>YYYY-MM-DD,NAME,CATEGORY,MERCHANT,AMOUNT,NOTES</em><br />
             ...
           </Typography>
           <div className={classes.buttonContainer}>

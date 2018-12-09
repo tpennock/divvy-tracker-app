@@ -30,7 +30,7 @@ defmodule DivvyTrackerWeb.TransactionController do
     end
   end
 
-  def create_batch(conn, %{"transaction" => transaction_list}) do
+  def create_batch(conn, %{"transactions" => transaction_list}) do
     case Expenses.create_batch_transactions(transaction_list) do
       {:ok, transaction} ->
         # conn

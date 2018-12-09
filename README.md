@@ -4,7 +4,8 @@ React-based, single-page app for categorizing transactions and keeping track of 
 
 ## Feature Wish List
 
-- `.csv` batch upload support
+- `.csv` batch upload support - UPDATE: this is pretty close, just need to figure out why the multi insert won't work.
+- sanitize number input on form to reconcile decimals
 - graphs pulling from data
 - Implement `react-redux` and all of its central state management goodness
 - Unit tests (addNewTransaction, batchUpload, romanNumerals etc.)

@@ -63,11 +63,23 @@ defmodule DivvyTracker.Expenses do
 
   """
   def create_batch_transactions(transactions \\ %{}) do
-    Enum.reduce(transactions, Multi.new(), fn transaction, multi ->
+    changesets = Enum.map(transactions, fn(transaction) ->
+      %Transaction{}
+      |> Transaction.changeset(transaction)
+    end)
+
+    IO.inspect transactions
+    IO.inspect changesets
+
+    # Multi.new()
+    #   |> Multi.insert_all(:insert_all, Transaction, transactions)
+    #   |> Repo.transaction()
+
+    Enum.reduce(changesets, Multi.new(), fn transaction, multi ->
       Multi.insert(
         multi,
         {:transaction, transaction.id},
-        create_transaction(transaction)
+        transaction
       )
     end)
   end
