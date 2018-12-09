@@ -16,25 +16,12 @@ import "phoenix_html"
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux'
+import configureStore from './store';
+// import registerServiceWorker from './registerServiceWorker';
 
-//TODO: IMPLEMENT THE STORE AND ALL OF ITS CENTRAL STATE MANAGEMENT GOODNESS
-// Store
-// import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux'
-// import { Provider, connect } from 'react-redux'
-// import thunk from 'redux-thunk'
-
-// import rootReducer from './reducers'
-
-// const store = createStore(  
-//   rootReducer,
-//   applyMiddleware(thunk)
-// )
-
-// store.dispatch({
-//   type: 'TRANSACTIONS',
-// })
-
-// console.log(store.getState())
+// Components
+import Main from "./components/main";
 
 // material-ui theme overrides
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -52,9 +39,6 @@ const divvyTheme = createMuiTheme({
   },
 });
 
-// Components
-import Main from "./components/main";
-
 export default class App extends React.Component {
   render() {
     return (
@@ -68,14 +52,15 @@ export default class App extends React.Component {
 }
 
 ReactDOM.render(
-  // <Provider store={store}>
+  <Provider store={configureStore()}>
     <BrowserRouter>
       <App/>
     </BrowserRouter>
-  // </Provider>
+  </Provider>
   , 
   document.getElementById('app')
-)
+);
+// registerServiceWorker();
 
 // Import local files
 //

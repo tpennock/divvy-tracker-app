@@ -1,5 +1,5 @@
-import { combineReducers }  from 'redux';  
-import transactions    from './transactions';
+import { combineReducers } from 'redux';  
+import transactions from './transactions';
 
 export default combineReducers({  
   transactions

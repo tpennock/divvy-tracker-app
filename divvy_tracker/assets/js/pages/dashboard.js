@@ -1,5 +1,8 @@
 import React from 'react'
+import { compose } from 'redux';
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
+
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -10,26 +13,24 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TablePagination from '@material-ui/core/TablePagination';
-// import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-// import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CodeIcon from '@material-ui/icons/Code';
 import EditIcon from '@material-ui/icons/Edit';
-// import FilterListIcon from '@material-ui/icons/FilterList';
 // import { lighten } from '@material-ui/core/styles/colorManipulator';
-import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 import DialogAddTransaction from '../components/dialogs/dialog-add-transaction';
 import DialogAlert from '../components/dialogs/dialog-alert';
 
-// import Transactions from '../Transactions';
-import API from '../api';
+import { transactionCategories } from '../consts'
+import { convertCurrencyAsRomanNumeral } from '../utils'
+
+// import { setTransactions } from '../actions/transactions';
 
 const styles = theme => ({
   paper: {
@@ -55,6 +56,15 @@ const styles = theme => ({
     fontSize: 11,
   }
 });
+
+const mapStateToProps = state => ({
+  ...state
+  // transactions: state.transactions
+})
+
+const mapDispatchToProps = dispatch => ({
+  // setTransactions: () => dispatch(setTransactions())
+})
 
 // sorting and filtering
 function desc(a, b, orderBy) {
@@ -101,7 +111,7 @@ class Dashboard extends React.Component {
     romanNumerals: false,
     order: 'desc',
     orderBy: 'date',
-    data: [],
+    // data: [], //TODO: replace this with the store
     page: 0,
     rowsPerPage: 5,
   };
@@ -137,17 +147,19 @@ class Dashboard extends React.Component {
   };
 
   updateTransactionList = (transactions) => {
-    this.setState({ data: transactions });
+    console.info('TODO: wire this up to the store')
+    // this.setState({ data: transactions });
   };
 
   handleDelete = (id) => {
-    API.deleteTransaction(id)
-      .then(response => {
-        this.setState({ data: response.data.transactions })
-      })
-      .then(error => {
-        //TODO: trigger an alert
-      });
+    console.info('TODO: wire this up to the store')
+    // API.deleteTransaction(id)
+    //   .then(response => {
+    //     this.setState({ data: response.data.transactions })
+    //   })
+    //   .then(error => {
+    //     //TODO: trigger an alert
+    //   });
   }
 
   // wrapper call to create our sort handler -> Render methods should be a pure function of props and state.
@@ -160,55 +172,24 @@ class Dashboard extends React.Component {
     this.setState(state => ({ romanNumerals: !state.romanNumerals }));
   };
 
-  //TODO: move into utils.js
-  // translate whole dollar into roman numeral
-  translateCurrencyAsRomanNumeral = currency => {
-    const romanNumeralVals = {
-      M: 1000,
-      CM: 900,
-      D: 500,
-      CD: 400,
-      C: 100,
-      XC: 90,
-      L: 50,
-      XL: 40,
-      X: 10,
-      IX: 9,
-      V: 5,
-      IV: 4,
-      I: 1
-    };
-    let roman = '',
-    i;
+  // checks whether to translate -> Roman Numerals -> returns currency value
+  getCurrency = currency => this.state.romanNumerals ? convertCurrencyAsRomanNumeral(currency) : currency;
+  
+  // return the label for a matching category value
+  getCategoryLabel = category => transactionCategories.find(obj => {
+    return obj.value === category;
+  }).label;
 
-    for ( i in romanNumeralVals ) {
-      while ( currency >= romanNumeralVals[i] ) {
-        roman += i;
-        currency -= romanNumeralVals[i];
-      }
-    }
+  hasData = () => this.props.transactions.transactions.length > 0;
 
-    return roman;
-  };
-
-  // checks whether to translate and returns currency
-  getCurrency = currency => this.state.romanNumerals ? this.translateCurrencyAsRomanNumeral(currency) : currency;
-
-  hasData = () => this.state.data && this.state.data.length > 0;
-
-  componentWillMount() {
-    API.getTransactions()
-      .then(response => {
-        this.setState({ data: response.data.transactions })
-      })
-      .then(error => {
-        //TODO: trigger an alert
-      });
-  };
+  // componentDidMount() {
+  //   console.info(this.props.transactions.transactions)
+  //   this.setState({ data: this.props.transactions.transactions })
+  // };
 
   render() {
     const { classes } = this.props;
-    const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.data.length - this.state.page * this.state.rowsPerPage);
+    const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.props.transactions.transactions.length - this.state.page * this.state.rowsPerPage);
 
     return (
       <div>
@@ -247,7 +228,7 @@ class Dashboard extends React.Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {stableSort(this.state.data, getSorting(this.state.order, this.state.orderBy))
+                  {stableSort(this.props.transactions.transactions, getSorting(this.state.order, this.state.orderBy))
                     .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                     .map(n => {
                       return (
@@ -255,7 +236,7 @@ class Dashboard extends React.Component {
                           <TableCell padding="dense" numeric>{n.id}</TableCell>
                           <TableCell padding="dense">{n.name}</TableCell>
                           <TableCell padding="dense">{n.date}</TableCell>
-                          <TableCell padding="dense">{n.category}</TableCell>
+                          <TableCell padding="dense">{this.getCategoryLabel(n.category)}</TableCell>
                           <TableCell padding="dense">{n.merchant}</TableCell>
                           <TableCell padding="dense" numeric>{this.getCurrency(n.amount)}</TableCell>
                           <TableCell padding="dense">{n.notes}</TableCell>
@@ -305,7 +286,7 @@ class Dashboard extends React.Component {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={this.state.data.length}
+                count={this.props.transactions.transactions.length}
                 rowsPerPage={this.state.rowsPerPage}
                 page={this.state.page}
                 backIconButtonProps={{
@@ -347,6 +328,11 @@ class Dashboard extends React.Component {
               closeDialog={this.handleAlertDialogToggle} 
             />
           </div>
+          <pre>
+          {
+            JSON.stringify(this.props.transactions.transactions)
+          }
+          </pre>
         </main>
       </div>
     );
@@ -357,4 +343,7 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Dashboard);
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps),
+)(Dashboard);

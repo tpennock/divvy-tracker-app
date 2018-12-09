@@ -16,6 +16,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
+import { transactionCategories } from '../../consts';
+
 import API from '../../api';
 
 const styles = theme => ({
@@ -30,29 +32,6 @@ const newState = {
   amount: '',
   notes: ''
 };
-
-const categories = [
-  {
-    value: 'food',
-    label: 'Food',
-  },
-  {
-    value: 'travel',
-    label: 'Travel',
-  },
-  {
-    value: 'training',
-    label: 'Training',
-  },
-  {
-    value: 'office_snacks',
-    label: 'Office Snacks',
-  },
-  {
-    value: 'fuel',
-    label: 'Fuel',
-  }
-];
 
 class DialogAddTransaction extends React.Component {
   state = {};
@@ -120,7 +99,7 @@ class DialogAddTransaction extends React.Component {
           <form className={classes.container} autoComplete="off">
             <TextField
               id="name"
-              label="Name"
+              label="Transaction Name"
               className={classes.textField}
               required
               onChange={this.handleChange('name')}
@@ -147,7 +126,7 @@ class DialogAddTransaction extends React.Component {
                 onChange={this.handleChange('category')}
                 input={<Input id="category" />}
               >
-                {categories.map(option => (
+                {transactionCategories.map(option => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>

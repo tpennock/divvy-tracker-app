@@ -3,13 +3,14 @@ const initialState = {
   transactions: []
 };
 
-export default function reducer(state = initialState, action = {}) {  
+export default function reducer(state = initialState, action = {})  {
   switch (action.type) {
     case 'TRANSACTIONS':
-      return {...state, transactions: action.transactions}
+      return {...state, transactions: action.payload}
     case 'TRANSACTIONS_ERROR':
       return {...state, errors: action.errors}
     default:
       return state;
   }
-}
+ };
+ 

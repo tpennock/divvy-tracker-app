@@ -42,7 +42,7 @@ class Upload extends React.Component {
           {
             header: true,
             error: function() {
-              console.info("error")
+              console.error("error")
             }  
           }
         );

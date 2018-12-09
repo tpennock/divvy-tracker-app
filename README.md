@@ -4,8 +4,9 @@ React-based, single-page app for categorizing transactions and keeping track of 
 
 ## Feature Wish List
 
-- graphs pulling from data
 - Implement `react-redux` and all of its central state management goodness
+- graphs pulling from data
+- update transactions
 - Unit tests (addNewTransaction, batchUpload, romanNumerals etc.)
 - `/users` page with real data
 - More documentation
