@@ -27,7 +27,7 @@ const newState = {
   date: format(new Date(), 'YYYY-MM-DD'),
   category: '',
   merchant: '',
-  amount:'',
+  amount: '',
   notes: ''
 };
 
@@ -88,7 +88,16 @@ class DialogAddTransaction extends React.Component {
     this.handleDialogToggle();
   };
 
+  // onChange: go ahead and set state whenever field values change
   handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
+
+  // onBlur: need to format our data types a bit
+  handleBlur = name => event => {
+    if (name == "amount") {
+      event.target.value = parseFloat(event.target.value).toFixed(2);
+    }
     this.setState({ [name]: event.target.value });
   };
 
@@ -160,6 +169,7 @@ class DialogAddTransaction extends React.Component {
               type="number"
               required
               onChange={this.handleChange('amount')}
+              onBlur={this.handleBlur('amount')}
               fullWidth
               className={classes.textField}
               InputProps={{
@@ -179,10 +189,10 @@ class DialogAddTransaction extends React.Component {
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleDialogToggle} color="primary">
+          <Button onClick={this.handleDialogToggle} color="secondary">
             Cancel
           </Button>
-          <Button onClick={this.addTransaction} color="primary">
+          <Button onClick={this.addTransaction} color="primary" autoFocus>
             Done
           </Button>
         </DialogActions>

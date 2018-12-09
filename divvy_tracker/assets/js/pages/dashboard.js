@@ -23,6 +23,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 import DialogAddTransaction from '../components/dialogs/dialog-add-transaction';
+import DialogAlert from '../components/dialogs/dialog-alert';
 
 // import Transactions from '../Transactions';
 import API from '../api';
@@ -84,7 +85,9 @@ const rows = [
 
 class Dashboard extends React.Component {
   state = {
-    dialogOpen: false, // this controls dialog visibility and will be passed -> child dialog
+    dialogAddOpen: false, // this controls add dialog visibility and will be passed -> child dialog
+    dialogAlertOpen: false, // this controls alert dialog visibility and will be passed -> child dialog
+    deleteId: 0,
     romanNumerals: false,
     order: 'desc',
     orderBy: 'date',
@@ -114,8 +117,13 @@ class Dashboard extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  handleDialogToggle = () => {
-    this.setState(state => ({ dialogOpen: !state.dialogOpen }));
+  handleAddDialogToggle = () => {
+    this.setState(state => ({ dialogAddOpen: !state.dialogAddOpen }));
+  };
+
+  handleAlertDialogToggle = (id) => {
+    this.setState({ deleteId: id });
+    this.setState(state => ({ dialogAlertOpen: !state.dialogAlertOpen }));
   };
 
   updateTransactionList = (transactions) => {
@@ -198,7 +206,7 @@ class Dashboard extends React.Component {
         <main>
           <Typography variant="h4" gutterBottom component="h2">
             Dashboard
-            <Fab color="primary" aria-label="Add" size="small" className={classes.fab} onClick={this.handleDialogToggle}>
+            <Fab color="primary" aria-label="Add" size="small" className={classes.fab} onClick={this.handleAddDialogToggle}>
               <AddIcon />
             </Fab>
           </Typography>
@@ -243,7 +251,7 @@ class Dashboard extends React.Component {
                           <TableCell padding="dense" numeric>{this.getCurrency(n.amount)}</TableCell>
                           <TableCell padding="dense">{n.notes}</TableCell>
                           <TableCell padding="dense">
-                            <IconButton color="secondary" aria-label="Delete" size="small" onClick={() => this.handleDelete(n.id)}>
+                            <IconButton color="secondary" aria-label="Delete" size="small" onClick={() => this.handleAlertDialogToggle(n.id)}>
                               <DeleteIcon />
                             </IconButton>
                           </TableCell>
@@ -289,8 +297,18 @@ class Dashboard extends React.Component {
                   {this.state.romanNumerals ? "Hide" : "Show"} Roman Numerals
               </Button>
             }
-            {/* <Transactions /> */}
-            <DialogAddTransaction open={this.state.dialogOpen} addedNew={this.updateTransactionList} closeDialog={this.handleDialogToggle} />
+            <DialogAddTransaction 
+              open={this.state.dialogAddOpen} 
+              addedNew={this.updateTransactionList} 
+              closeDialog={this.handleAddDialogToggle} 
+            />
+            <DialogAlert 
+              open={this.state.dialogAlertOpen}
+              alertTitle="Delete?"
+              alertDesc="This action can't be undone. Please confirm that you'd like to delete this transaction."
+              confirm={() => this.handleDelete(this.state.deleteId)} 
+              closeDialog={this.handleAlertDialogToggle} 
+            />
           </div>
         </main>
       </div>

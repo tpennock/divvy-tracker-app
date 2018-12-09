@@ -40,7 +40,6 @@ const API = {
       });
   },
   createBatchTransactions: (payload) => {
-    debugger;
     return axios.post('http://localhost:4000/api/transactions/batch', payload)
       .then(function (response) {
         console.log(response);
@@ -60,7 +59,6 @@ const API = {
       });
   },
   deleteTransaction: (id) => {
-    debugger;
     return axios.delete('http://localhost:4000/api/transactions/' + id)
       .then(function (response) {
         console.log(response);
