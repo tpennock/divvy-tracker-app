@@ -61,27 +61,24 @@ defmodule DivvyTracker.Expenses do
 
   ## Examples
 
+      iex> create_batch_transactions(%{field: value})
+      {:ok, %Transaction{}}
+
+      iex> create_batch_transactions(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
   """
   def create_batch_transactions(transactions \\ %{}) do
     changesets = Enum.map(transactions, fn(transaction) ->
       %Transaction{}
-      |> Transaction.changeset(transaction)
+        |> Transaction.changeset(transaction)
     end)
 
-    IO.inspect transactions
-    IO.inspect changesets
+    multi =
+      changesets
+      |> Enum.reduce(Multi.new, fn(cset, multi) -> Multi.insert(multi, Ecto.UUID.generate, cset) end)
 
-    # Multi.new()
-    #   |> Multi.insert_all(:insert_all, Transaction, transactions)
-    #   |> Repo.transaction()
-
-    Enum.reduce(changesets, Multi.new(), fn transaction, multi ->
-      Multi.insert(
-        multi,
-        {:transaction, transaction.id},
-        transaction
-      )
-    end)
+    {:ok, _} = Repo.transaction(multi)
   end
 
   @doc """
