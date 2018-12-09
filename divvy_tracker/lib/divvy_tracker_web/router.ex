@@ -19,9 +19,12 @@ defmodule DivvyTrackerWeb.Router do
 
     # resources "/transactions", TransactionController
     get "/transactions", TransactionController, :index
+    get "/transactions/:id/edit", TransactionController, :edit
+    get "/transactions/new", TransactionController, :new
+    get "/transactions/:id", TransactionController, :show
     post "/transactions", TransactionController, :create
     post "/transactions/batch", TransactionController, :create_batch
-    get "/transactions/:id", TransactionController, :show
+    put "/transactions/:id", TransactionController, :update
     delete "/transactions/:id", TransactionController, :delete
   end
 

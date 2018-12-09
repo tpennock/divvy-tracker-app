@@ -14,10 +14,13 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 // import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CodeIcon from '@material-ui/icons/Code';
+import EditIcon from '@material-ui/icons/Edit';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 // import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
@@ -44,6 +47,12 @@ const styles = theme => ({
     position: 'absolute',
     // bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 3,
+  },
+  lightTooltip: {
+    background: theme.palette.common.white,
+    color: theme.palette.text.primary,
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
   }
 });
 
@@ -74,13 +83,14 @@ function getSorting(order, orderBy) {
 
 // data
 const rows = [
+  { id: 'id', numeric: true, label: 'ID' },
   { id: 'name', numeric: false, label: 'Name' },
   { id: 'date', numeric: false, label: 'Date' },
   { id: 'category', numeric: false, label: 'Category' },
   { id: 'merchant', numeric: false, label: 'Merchant' },
   { id: 'amount', numeric: true, label: 'Amount' },
   { id: 'notes', numeric: false, label: 'Notes' },
-  { id: 'delete', numeric: false, component: Button, label: 'Delete?' },
+  { id: 'options', numeric: false, component: Button, label: 'Options' },
 ];
 
 class Dashboard extends React.Component {
@@ -242,18 +252,45 @@ class Dashboard extends React.Component {
                     .map(n => {
                       return (
                         <TableRow key={n.id} className={classes.row}>
-                          <TableCell component="th" scope="row" padding="dense">
-                            {n.name}
-                          </TableCell>
+                          <TableCell padding="dense" numeric>{n.id}</TableCell>
+                          <TableCell padding="dense">{n.name}</TableCell>
                           <TableCell padding="dense">{n.date}</TableCell>
                           <TableCell padding="dense">{n.category}</TableCell>
                           <TableCell padding="dense">{n.merchant}</TableCell>
                           <TableCell padding="dense" numeric>{this.getCurrency(n.amount)}</TableCell>
                           <TableCell padding="dense">{n.notes}</TableCell>
                           <TableCell padding="dense">
-                            <IconButton color="secondary" aria-label="Delete" size="small" onClick={() => this.handleAlertDialogToggle(n.id)}>
+                            <IconButton 
+                              color="secondary" 
+                              aria-label="Delete" 
+                              size="small"
+                              onClick={() => this.handleAlertDialogToggle(n.id)}
+                            >
                               <DeleteIcon />
                             </IconButton>
+                            {/* //TODO: edit transactions */}
+                            {/* <IconButton 
+                              color="secondary" 
+                              aria-label="Edit" 
+                              size="small"
+                              component="a" 
+                              href={"/api/transactions/" + n.id + "/edit"}
+                              target="blank"
+                            >
+                              <EditIcon />
+                            </IconButton> */}
+                            <Tooltip title={"View data for transaction ID: " + n.id} classes={{ tooltip: classes.lightTooltip }}>
+                              <IconButton 
+                                color="secondary" 
+                                aria-label="View transaction data" 
+                                size="small"
+                                component="a" 
+                                href={"/api/transactions/" + n.id}
+                                target="blank"
+                              >
+                                <CodeIcon />
+                              </IconButton>
+                            </Tooltip>
                           </TableCell>
                         </TableRow>
                       );
@@ -304,8 +341,8 @@ class Dashboard extends React.Component {
             />
             <DialogAlert 
               open={this.state.dialogAlertOpen}
-              alertTitle="Delete?"
-              alertDesc="This action can't be undone. Please confirm that you'd like to delete this transaction."
+              alertTitle={"Delete?"}
+              alertDesc={"This action can't be undone. Please confirm that you'd like to delete this transaction."}
               confirm={() => this.handleDelete(this.state.deleteId)} 
               closeDialog={this.handleAlertDialogToggle} 
             />

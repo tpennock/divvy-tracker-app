@@ -33,8 +33,6 @@ class DialogAlert extends React.Component {
 
   render() {
     const { classes } = this.props;
-
-    console.info(this.props);
     
     return (
       <Dialog

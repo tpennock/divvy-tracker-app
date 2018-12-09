@@ -37,7 +37,6 @@ class Upload extends React.Component {
       const filename = e.target.files[0].name;
 
       reader.onload = event => {
-        console.info(event.target.result);
         const csvData = PapaParse.parse(
           event.target.result,
           {
@@ -47,13 +46,9 @@ class Upload extends React.Component {
             }  
           }
         );
-        console.info(csvData);
         const payload = {
           transactions: csvData.data
         }
-        console.info(payload);
-        //TODO: save data to db
-        // onFileLoaded(csvData.data, filename);
         API.createBatchTransactions(payload)
           .then(response => this.successFunc(response))
           .then(error => this.failFunc(error))
