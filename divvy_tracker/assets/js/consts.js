@@ -1,34 +1,10 @@
-export const transactionCategories = [
-  {
-    value: 'food',
-    label: 'Food',
-  },
-  {
-    value: 'fuel',
-    label: 'Fuel',
-  },
-  {
-    value: 'office_snacks',
-    label: 'Office Snacks',
-  },
-  {
-    value: 'office_supplies',
-    label: 'Office Supplies',
-  },
-  {
-    value: 'offsites',
-    label: 'Offsites',
-  },
-  {
-    value: 'software_license',
-    label: 'Software Licence',
-  },
-  {
-    value: 'training',
-    label: 'Training',
-  },
-  {
-    value: 'travel',
-    label: 'Travel',
-  }
-];
+export const transactionCategories = {
+  food: "Food",
+  fuel: "Fuel",
+  office_snacks: "Office Snacks",
+  office_supplies: "Office Supplies",
+  offsites: "Offsites",
+  software_license: "Software License",
+  training: "Training",
+  travel: "Travel"
+};

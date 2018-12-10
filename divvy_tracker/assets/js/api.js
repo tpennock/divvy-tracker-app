@@ -6,18 +6,10 @@ const API = {
       .then(function (response) {
         console.log(response);
         return response;
-        // dispatch({
-        //   type: "TRANSACTIONS",
-        //   transactions: data.transactions
-        // });
       })
       .catch(function (error) {
         console.log(error);
         return error;
-        // dispatch({
-        //   type: "TRANSACTIONS_ERROR",
-        //   errors: data.errors
-        // })
       });
   },
   createTransaction: (payload) => {
@@ -25,18 +17,10 @@ const API = {
       .then(function (response) {
         console.log(response);
         return response;
-        // dispatch({
-        //   type: "TRANSACTIONS",
-        //   transactions: data.transactions
-        // });
       })
       .catch(function (error) {
         console.log(error);
         return error;
-        // dispatch({
-        //   type: "TRANSACTIONS_ERROR",
-        //   errors: data.errors
-        // })
       });
   },
   createBatchTransactions: (payload) => {
@@ -44,18 +28,10 @@ const API = {
       .then(function (response) {
         console.log(response);
         return response;
-        // dispatch({
-        //   type: "TRANSACTIONS",
-        //   transactions: data.transactions
-        // });
       })
       .catch(function (error) {
         console.log(error);
         return error;
-        // dispatch({
-        //   type: "TRANSACTIONS_ERROR",
-        //   errors: data.errors
-        // })
       });
   },
   deleteTransaction: (id) => {
@@ -63,18 +39,10 @@ const API = {
       .then(function (response) {
         console.log(response);
         return response;
-        // dispatch({
-        //   type: "TRANSACTIONS",
-        //   transactions: data.transactions
-        // });
       })
       .catch(function (error) {
         console.log(error);
         return error;
-        // dispatch({
-        //   type: "TRANSACTIONS_ERROR",
-        //   errors: data.errors
-        // })
       });
   },
   updateTransaction: (id, payload) => {
@@ -82,18 +50,10 @@ const API = {
       .then(function (response) {
         console.log(response);
         return response;
-        // dispatch({
-        //   type: "TRANSACTIONS",
-        //   transactions: data.transactions
-        // });
       })
       .catch(function (error) {
         console.log(error);
         return error;
-        // dispatch({
-        //   type: "TRANSACTIONS_ERROR",
-        //   errors: data.errors
-        // })
       });
   }
 };

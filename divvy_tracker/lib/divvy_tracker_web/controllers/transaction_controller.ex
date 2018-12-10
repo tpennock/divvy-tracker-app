@@ -33,8 +33,8 @@ defmodule DivvyTrackerWeb.TransactionController do
   def create_batch(conn, %{"transactions" => transaction_list}) do
     case Expenses.create_batch_transactions(transaction_list) do
       {:ok, transaction} ->
-        conn
-        |> put_flash(:info, "Transaction created successfully.")
+        # conn
+        # |> put_flash(:info, "Transaction created successfully.")
         # |> redirect(to: Routes.transaction_path(conn, :show, transaction))
         transactions = Expenses.list_transactions()
         render conn, "index.json", transactions: transactions
@@ -60,8 +60,8 @@ defmodule DivvyTrackerWeb.TransactionController do
 
     case Expenses.update_transaction(transaction, transaction_params) do
       {:ok, transaction} ->
-        conn
-        |> put_flash(:info, "Transaction updated successfully.")
+        # conn
+        # |> put_flash(:info, "Transaction updated successfully.")
         # |> redirect(to: Routes.transaction_path(conn, :show, transaction))
         render conn, "index.json", transaction: transaction
 

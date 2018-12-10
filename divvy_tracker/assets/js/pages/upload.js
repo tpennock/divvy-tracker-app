@@ -1,14 +1,18 @@
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import PapaParse from 'papaparse';
+
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { withStyles } from '@material-ui/core/styles';
 
-import API from '../api';
+import { createBatchTransactions } from '../actions/transactions';
 
 const styles = theme => ({
   buttonContainer: {
@@ -17,17 +21,17 @@ const styles = theme => ({
   }
 });
 
+const mapStateToProps = state => ({
+  ...state
+});
+
+const mapDispatchToProps = dispatch => ({
+  createBatchTransactions: payload => dispatch(createBatchTransactions(payload))
+});
+
 const csvFieldLookup = ["date", "name", "category", "merchant", "amount", "notes"];
 
 class Upload extends React.Component {
-  successFunc = (response) => {
-    //TODO: IMPLEMENT THE STORE: update store for response.data.transactions
-  };
-
-  failFunc = (error) => {
-    //TODO: trigger an alert
-  };
-
   render() {
     const { classes } = this.props;
 
@@ -46,12 +50,9 @@ class Upload extends React.Component {
             }  
           }
         );
-        const payload = {
+        this.props.createBatchTransactions({
           transactions: csvData.data
-        }
-        API.createBatchTransactions(payload)
-          .then(response => this.successFunc(response))
-          .then(error => this.failFunc(error))
+        });
       };
 
       reader.readAsText(e.target.files[0]);
@@ -72,6 +73,9 @@ class Upload extends React.Component {
             <em>YYYY-MM-DD,NAME,CATEGORY,MERCHANT,AMOUNT,NOTES</em><br />
             <em>YYYY-MM-DD,NAME,CATEGORY,MERCHANT,AMOUNT,NOTES</em><br />
             ...
+          </Typography>
+          <Typography variant="body2" gutterBottom color="textSecondary">
+            Currently {this.props.transactions.transactions.length} items
           </Typography>
           <div className={classes.buttonContainer}>
             <Grid container spacing={32}>
@@ -103,4 +107,7 @@ Upload.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Upload);
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps),
+)(Upload);

@@ -1,5 +1,9 @@
 import React from 'react'
+import { compose } from 'redux';
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
+import { format, formatDistance, formatRelative, subDays } from 'date-fns'
+
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -14,17 +18,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 import { transactionCategories } from '../../consts';
 
-import API from '../../api';
+import { createTransaction } from '../../actions/transactions';
 
 const styles = theme => ({
 });
 
 // form data
-const newState = {
+const newForm = {
   name: '',
   date: format(new Date(), 'YYYY-MM-DD'),
   category: '',
@@ -33,43 +36,55 @@ const newState = {
   notes: ''
 };
 
+const mapStateToProps = state => ({
+  ...state
+});
+
+const mapDispatchToProps = dispatch => ({
+  createTransaction: payload => dispatch(createTransaction(payload))
+});
+
 class DialogAddTransaction extends React.Component {
-  state = {};
+  state = {
+    categories: [],
+    form: {}
+  };
 
   componentDidMount() {
     // intialize state on render 
     // the reason for this is so we can store a clean object for resetting the form on cancel/add
-    this.setState(newState);
-  }
+    this.setState(
+      { categories: Object.keys(transactionCategories).map(function(key, idx) {
+          return {value: key, label: transactionCategories[key]};
+        })
+      }
+    );
+    this.resetForm();
+    console.info(this.state)
+  };
+
+  // clear form data
+  resetForm() {
+    this.setState({ form: newForm });
+  };
 
   // communicate intent to close dialog back to parent via 'props.closeDialog'
   handleDialogToggle = () => {
     this.props.closeDialog();
-    this.setState(newState); // clear form data
-  };
-
-  successFunc = (response) => {
-    this.props.addedNew(response.data.transactions);
-    //TODO: IMPLEMENT THE STORE: update store for response.data.transactions
-  };
-
-  failFunc = (error) => {
-    //TODO: trigger an alert
+    this.resetForm();
   };
 
   addTransaction = () => {
-    const payload = {
-      transaction: this.state
-    }
-    API.createTransaction(payload)
-      .then(response => this.successFunc(response))
-      .then(error => this.failFunc(error))
+    this.props.createTransaction({
+      transaction: this.state.form
+    });
     this.handleDialogToggle();
   };
 
   // onChange: go ahead and set state whenever field values change
   handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
+    // updating nested state properties is weird
+    this.setState({ form: { ...this.state.form, [name]: event.target.value } });
   };
 
   // onBlur: need to format our data types a bit
@@ -77,7 +92,7 @@ class DialogAddTransaction extends React.Component {
     if (name == "amount") {
       event.target.value = parseFloat(event.target.value).toFixed(2);
     }
-    this.setState({ [name]: event.target.value });
+    this.setState({ form: { ...this.state.form, [name]: event.target.value } });
   };
 
   render() {
@@ -113,7 +128,7 @@ class DialogAddTransaction extends React.Component {
               required
               fullWidth
               onChange={this.handleChange('date')}
-              defaultValue={this.state.date}
+              defaultValue={this.state.form.date}
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
@@ -122,11 +137,11 @@ class DialogAddTransaction extends React.Component {
             <FormControl className={classes.formControl} fullWidth margin="normal">
               <InputLabel htmlFor="category">Category</InputLabel>
               <Select
-                value={this.state.category}
+                value={this.state.form.category}
                 onChange={this.handleChange('category')}
                 input={<Input id="category" />}
               >
-                {transactionCategories.map(option => (
+                {this.state.categories.map(option => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
@@ -184,4 +199,7 @@ DialogAddTransaction.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(DialogAddTransaction);
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps),
+)(DialogAddTransaction);

@@ -21,7 +21,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CodeIcon from '@material-ui/icons/Code';
-import EditIcon from '@material-ui/icons/Edit';
+// import EditIcon from '@material-ui/icons/Edit';
 // import { lighten } from '@material-ui/core/styles/colorManipulator';
 
 import DialogAddTransaction from '../components/dialogs/dialog-add-transaction';
@@ -30,7 +30,7 @@ import DialogAlert from '../components/dialogs/dialog-alert';
 import { transactionCategories } from '../consts'
 import { convertCurrencyAsRomanNumeral } from '../utils'
 
-// import { setTransactions } from '../actions/transactions';
+import { deleteTransaction } from '../actions/transactions';
 
 const styles = theme => ({
   paper: {
@@ -59,12 +59,11 @@ const styles = theme => ({
 
 const mapStateToProps = state => ({
   ...state
-  // transactions: state.transactions
-})
+});
 
 const mapDispatchToProps = dispatch => ({
-  // setTransactions: () => dispatch(setTransactions())
-})
+  deleteTransaction: id => dispatch(deleteTransaction(id))
+});
 
 // sorting and filtering
 function desc(a, b, orderBy) {
@@ -146,20 +145,8 @@ class Dashboard extends React.Component {
     this.setState(state => ({ dialogAlertOpen: !state.dialogAlertOpen }));
   };
 
-  updateTransactionList = (transactions) => {
-    console.info('TODO: wire this up to the store')
-    // this.setState({ data: transactions });
-  };
-
   handleDelete = (id) => {
-    console.info('TODO: wire this up to the store')
-    // API.deleteTransaction(id)
-    //   .then(response => {
-    //     this.setState({ data: response.data.transactions })
-    //   })
-    //   .then(error => {
-    //     //TODO: trigger an alert
-    //   });
+    this.props.deleteTransaction(id);
   }
 
   // wrapper call to create our sort handler -> Render methods should be a pure function of props and state.
@@ -176,16 +163,9 @@ class Dashboard extends React.Component {
   getCurrency = currency => this.state.romanNumerals ? convertCurrencyAsRomanNumeral(currency) : currency;
   
   // return the label for a matching category value
-  getCategoryLabel = category => transactionCategories.find(obj => {
-    return obj.value === category;
-  }).label;
+  getCategoryLabel = category => transactionCategories[category];
 
   hasData = () => this.props.transactions.transactions.length > 0;
-
-  // componentDidMount() {
-  //   console.info(this.props.transactions.transactions)
-  //   this.setState({ data: this.props.transactions.transactions })
-  // };
 
   render() {
     const { classes } = this.props;
@@ -237,6 +217,7 @@ class Dashboard extends React.Component {
                           <TableCell padding="dense">{n.name}</TableCell>
                           <TableCell padding="dense">{n.date}</TableCell>
                           <TableCell padding="dense">{this.getCategoryLabel(n.category)}</TableCell>
+                          {/* <TableCell padding="dense">{n.category}</TableCell> */}
                           <TableCell padding="dense">{n.merchant}</TableCell>
                           <TableCell padding="dense" numeric>{this.getCurrency(n.amount)}</TableCell>
                           <TableCell padding="dense">{n.notes}</TableCell>
@@ -316,9 +297,8 @@ class Dashboard extends React.Component {
               </Button>
             }
             <DialogAddTransaction 
-              open={this.state.dialogAddOpen} 
-              addedNew={this.updateTransactionList} 
-              closeDialog={this.handleAddDialogToggle} 
+              open={this.state.dialogAddOpen}
+              closeDialog={this.handleAddDialogToggle}
             />
             <DialogAlert 
               open={this.state.dialogAlertOpen}
@@ -328,11 +308,6 @@ class Dashboard extends React.Component {
               closeDialog={this.handleAlertDialogToggle} 
             />
           </div>
-          <pre>
-          {
-            JSON.stringify(this.props.transactions.transactions)
-          }
-          </pre>
         </main>
       </div>
     );

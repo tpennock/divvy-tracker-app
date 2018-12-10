@@ -30,3 +30,10 @@ export function convertCurrencyAsRomanNumeral(currency) {
 
   return roman;
 };
+
+// convert an object into an array
+export function convertObjToArray(obj) {
+  let list = Object.keys(obj).map(function(key, idx) {
+    return [key, obj[key]];
+  });
+}
