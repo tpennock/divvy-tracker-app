@@ -2,7 +2,6 @@
 
 // convert whole dollar into roman numeral
 export function convertCurrencyAsRomanNumeral(currency) {
-  console.info(currency);
   const romanNumeralVals = {
     M: 1000,
     CM: 900,
@@ -33,7 +32,23 @@ export function convertCurrencyAsRomanNumeral(currency) {
 
 // convert an object into an array
 export function convertObjToArray(obj) {
-  let list = Object.keys(obj).map(function(key, idx) {
-    return [key, obj[key]];
+  return Object.keys(obj).map(function(key, idx) {
+    return obj[key];
   });
+};
+
+// month name utils
+var months = [
+  'January', 'February', 'March', 'April', 'May',
+  'June', 'July', 'August', 'September',
+  'October', 'November', 'December'
+  ];
+
+export function monthNumToName(monthnum) {
+    return months[monthnum - 1] || '';
+}
+
+export function monthNameToNum(monthname) {
+    var month = months.indexOf(monthname);
+    return month ? month + 1 : 0;
 }

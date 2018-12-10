@@ -10,7 +10,7 @@
 // };
 
 // Green
-export const green = {
+export const divvyGreen = {
   light: '#B3FFF8',
   main: '#00CFBB',
   dark: '#00B3A0',
@@ -18,7 +18,7 @@ export const green = {
 };
 
 // Purple
-export const purple = {
+export const divvyPurple = {
   light: '#CCC5E8',
   main: '#6857B2',
   dark: '#4D3F97',

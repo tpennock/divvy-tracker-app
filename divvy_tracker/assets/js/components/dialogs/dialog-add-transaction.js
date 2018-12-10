@@ -60,7 +60,6 @@ class DialogAddTransaction extends React.Component {
       }
     );
     this.resetForm();
-    console.info(this.state)
   };
 
   // clear form data

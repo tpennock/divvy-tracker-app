@@ -217,7 +217,6 @@ class Dashboard extends React.Component {
                           <TableCell padding="dense">{n.name}</TableCell>
                           <TableCell padding="dense">{n.date}</TableCell>
                           <TableCell padding="dense">{this.getCategoryLabel(n.category)}</TableCell>
-                          {/* <TableCell padding="dense">{n.category}</TableCell> */}
                           <TableCell padding="dense">{n.merchant}</TableCell>
                           <TableCell padding="dense" numeric>{this.getCurrency(n.amount)}</TableCell>
                           <TableCell padding="dense">{n.notes}</TableCell>

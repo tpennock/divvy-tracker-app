@@ -4,7 +4,7 @@ React-based, single-page app for categorizing transactions and keeping track of 
 
 ## Feature Wish List
 
-- graphs pulling from data
+- fix bug with sorting amount
 - better error handling for server and apps
 - update transactions
 - unit tests (addNewTransaction, batchUpload, romanNumerals etc.)

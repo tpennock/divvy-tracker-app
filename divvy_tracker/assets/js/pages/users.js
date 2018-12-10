@@ -24,12 +24,15 @@ function createData(name, expenses, budget) {
 }
 
 const data = [
-  createData('Cindy Hawthorne', 250.85, 500.00),
-  createData('Dave Johnson', 350.21, 300.00),
-  createData('Peter Trimble', 85.25, 300.00),
-  createData('Kyle Smith', 420.23, 500.00),
-  createData('Sarah Moore', 11.48, 200.00),
-  createData('Andrew Thomas', 650.42, 1000.00)
+  createData('Cloud Strife', 250.85, 500.00),
+  createData('Tifa Lockhart', 350.21, 300.00),
+  createData('Aerith Gainsborough', 85.25, 300.00),
+  createData('Barret Wallace', 420.23, 500.00),
+  createData('Yuffie Kisaragi', 11.48, 200.00),
+  createData('Vincent Valentine', 650.42, 1000.00),
+  createData('Red XIII', 120.44, 300.00),
+  createData('Cait Sith', 44.44, 200.00),
+  createData('Cid Highwind', 346.89, 300.00),
 ];
 
 class Users extends React.Component {

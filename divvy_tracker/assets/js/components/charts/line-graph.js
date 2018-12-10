@@ -7,7 +7,7 @@ import YAxis from 'recharts/lib/cartesian/YAxis';
 import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
 import Tooltip from 'recharts/lib/component/Tooltip';
 import Legend from 'recharts/lib/component/Legend';
-import { green, purple } from '../colors'
+import { divvyGreen, divvyPurple } from '../colors'
 
 const data = [
   { name: 'Mon', Expenses: 2200, Orders: 3400 },
@@ -29,8 +29,8 @@ function LineGraph() {
         <CartesianGrid vertical={false} strokeDasharray="3 3" />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="Expenses" stroke={green.main} />
-        <Line type="monotone" dataKey="Orders" stroke={purple.main} activeDot={{ r: 8 }} />
+        <Line type="monotone" dataKey="Expenses" stroke={divvyGreen.main} />
+        <Line type="monotone" dataKey="Orders" stroke={divvyPurple.main} activeDot={{ r: 8 }} />
       </LineChart>
     </ResponsiveContainer>
   );

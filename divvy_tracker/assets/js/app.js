@@ -26,7 +26,7 @@ import Main from "./components/main";
 // material-ui theme overrides
 import { createMuiTheme } from '@material-ui/core/styles';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { green, purple } from './components/colors'
+import { divvyGreen, divvyPurple } from './components/colors'
 
 // Divvy theme
 const divvyTheme = createMuiTheme({
@@ -34,8 +34,8 @@ const divvyTheme = createMuiTheme({
     useNextVariants: true,
   },
   palette: {
-    primary: green,
-    secondary: purple,
+    primary: divvyGreen,
+    secondary: divvyPurple,
   },
 });
 
