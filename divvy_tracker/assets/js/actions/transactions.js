@@ -10,6 +10,8 @@ export const getTransactions = () => {
           errors: response.errors
         })
       else
+        //TODO: move this more central so we don't have to check on every response
+        response.data.transactions.map(x => x.amount = parseFloat(x.amount));
         dispatch({
           type: "TRANSACTIONS",
           transactions: response.data.transactions
@@ -33,6 +35,8 @@ export const createTransaction = payload => {
           errors: response.errors
         })
       else
+        //TODO: move this more central so we don't have to check on every response
+        response.data.transactions.map(x => x.amount = parseFloat(x.amount));
         dispatch({
           type: "TRANSACTIONS",
           transactions: response.data.transactions
@@ -56,6 +60,8 @@ export const createBatchTransactions = payload => {
           errors: response.errors
         })
       else
+        //TODO: move this more central so we don't have to check on every response
+        response.data.transactions.map(x => x.amount = parseFloat(x.amount));
         dispatch({
           type: "TRANSACTIONS",
           transactions: response.data.transactions
@@ -79,6 +85,8 @@ export const deleteTransaction = id => {
           errors: response.errors
         })
       else
+        //TODO: move this more central so we don't have to check on every response
+        response.data.transactions.map(x => x.amount = parseFloat(x.amount));
         dispatch({
           type: "TRANSACTIONS",
           transactions: response.data.transactions
