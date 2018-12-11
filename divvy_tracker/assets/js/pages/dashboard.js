@@ -30,7 +30,7 @@ import DialogAlert from '../components/dialogs/dialog-alert';
 import { transactionCategories } from '../consts'
 import { convertCurrencyAsRomanNumeral } from '../utils'
 
-import { deleteTransaction } from '../actions/transactions';
+import { deleteTransaction } from '../store/actions/transactions';
 
 const styles = theme => ({
   paper: {
@@ -110,7 +110,6 @@ class Dashboard extends React.Component {
     romanNumerals: false,
     order: 'desc',
     orderBy: 'date',
-    // data: [], //TODO: replace this with the store
     page: 0,
     rowsPerPage: 5,
   };

@@ -21,7 +21,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { transactionCategories } from '../../consts';
 
-import { createTransaction } from '../../actions/transactions';
+import { createTransaction } from '../../store/actions/transactions';
 
 const styles = theme => ({
 });
@@ -173,6 +173,7 @@ class DialogAddTransaction extends React.Component {
               id="notes"
               label="Notes"
               onChange={this.handleChange('notes')}
+              required
               multiline
               fullWidth
               rowsMax="4"

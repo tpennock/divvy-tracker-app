@@ -11,7 +11,7 @@ import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
 import Tooltip from 'recharts/lib/component/Tooltip';
 import Legend from 'recharts/lib/component/Legend';
 
-import { divvyGreen, divvyPurple } from '../colors'
+import { divvyGreen, divvyPurple } from '../../consts'
 import { convertObjToArray, monthNameToNum } from '../../utils'
 
 const mapStateToProps = state => ({

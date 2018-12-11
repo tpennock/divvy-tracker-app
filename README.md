@@ -4,6 +4,7 @@ React-based, single-page app for categorizing transactions and keeping track of 
 
 ## Feature Wish List
 
+- form validation for `add new`
 - better error handling for server and apps
 - update transactions
 - unit tests (addNewTransaction, batchUpload, romanNumerals etc.)

@@ -2,9 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { RadialBarChart, RadialBar, Legend, Tooltip } from 'recharts';
 
-import { transactionCategories } from '../../consts'
+import { transactionCategories, divvyGreen, divvyPurple } from '../../consts'
 import { convertObjToArray } from '../../utils'
-import { divvyGreen, divvyPurple } from '../colors'
 
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';

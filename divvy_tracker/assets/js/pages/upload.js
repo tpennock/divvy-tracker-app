@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { withStyles } from '@material-ui/core/styles';
 
-import { createBatchTransactions } from '../actions/transactions';
+import { createBatchTransactions } from '../store/actions/transactions';
 
 const styles = theme => ({
   buttonContainer: {

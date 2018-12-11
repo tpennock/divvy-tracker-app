@@ -17,7 +17,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux'
-import configureStore from './store';
+import configureStore from './store/store';
 // import registerServiceWorker from './registerServiceWorker';
 
 // Components
@@ -26,7 +26,7 @@ import Main from "./components/main";
 // material-ui theme overrides
 import { createMuiTheme } from '@material-ui/core/styles';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { divvyGreen, divvyPurple } from './components/colors'
+import { divvyGreen, divvyPurple } from './consts'
 
 // Divvy theme
 const divvyTheme = createMuiTheme({
