@@ -3,14 +3,14 @@ import { compose } from 'redux';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
-
+import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import Select from '@material-ui/core/Select';
+// import TextField from '@material-ui/core/TextField';
+// import InputLabel from '@material-ui/core/InputLabel';
+// import Input from '@material-ui/core/Input';
+// import Select from '@material-ui/core/Select';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuItem from '@material-ui/core/MenuItem';
 import Dialog from '@material-ui/core/Dialog';
@@ -34,6 +34,12 @@ const newForm = {
   merchant: '',
   amount: '',
   notes: ''
+};
+
+const formErrorMsg = {
+  required: 'this field is required',
+  date: 'date value needs to be formatted as YYYY-MM-DD',
+  amount: 'amount value needs to be formatted as ###.##'
 };
 
 const mapStateToProps = state => ({
@@ -105,91 +111,118 @@ class DialogAddTransaction extends React.Component {
         onClose={this.handleDialogToggle}
         aria-labelledby="add-transaction-form-dialog-title"
       >
-        <DialogTitle id="add-transaction-form-dialog-title">New Transaction</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Enter details below to track a new expense.
-          </DialogContentText>
-          <form className={classes.container} autoComplete="off">
-            <TextField
-              id="name"
-              label="Transaction Name"
-              className={classes.textField}
-              required
-              onChange={this.handleChange('name')}
-              margin="normal"
-              fullWidth
-            />
-            <TextField
-              id="date"
-              label="Date"
-              type="date"
-              required
-              fullWidth
-              onChange={this.handleChange('date')}
-              defaultValue={this.state.form.date}
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <FormControl className={classes.formControl} fullWidth margin="normal">
-              <InputLabel htmlFor="category">Category</InputLabel>
-              <Select
-                value={this.state.form.category}
-                onChange={this.handleChange('category')}
-                input={<Input id="category" />}
-              >
-                {this.state.categories.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <TextField
-              id="merchant"
-              label="Merchant"
-              className={classes.textField}
-              required
-              onChange={this.handleChange('merchant')}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              id="amount"
-              label="Amount"
-              type="number"
-              required
-              onChange={this.handleChange('amount')}
-              onBlur={this.handleBlur('amount')}
-              fullWidth
-              className={classes.textField}
-              InputProps={{
-                startAdornment: <InputAdornment position="start">$</InputAdornment>
-              }}
-            />
-            <TextField
-              id="notes"
-              label="Notes"
-              onChange={this.handleChange('notes')}
-              required
-              multiline
-              fullWidth
-              rowsMax="4"
-              className={classes.textField}
-              margin="normal"
-            />
-          </form>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleDialogToggle} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={this.addTransaction} color="primary" autoFocus>
-            Done
-          </Button>
-        </DialogActions>
+        <ValidatorForm 
+          id="add-transaction-form" 
+          ref="add-transaction-form" 
+          autoComplete="off"
+          onError={errors => console.log(errors)}
+          onSubmit={this.addTransaction}
+        >
+          <DialogTitle id="add-transaction-form-dialog-title">New Transaction</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Enter details below to track a new expense.
+            </DialogContentText>
+            {/* <ValidatorForm 
+              id="add-transaction-form" 
+              ref="add-transaction-form" 
+              className={classes.container} 
+              autoComplete="off"
+              onError={errors => console.log(errors)}
+            > */}
+              <TextValidator
+                id="name"
+                name="name"
+                label="Transaction Name*"
+                margin="normal"
+                fullWidth
+                value={this.state.form.name}
+                onChange={this.handleChange('name')}
+                validators={['required']}
+                errorMessages={[formErrorMsg.required]}
+              />
+              <TextValidator
+                id="date"
+                name="date"
+                label="Date*"
+                type="date"
+                fullWidth
+                value={this.state.form.date}
+                onChange={this.handleChange('date')}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                validators={['required']}
+                errorMessages={[formErrorMsg.required]}
+              />
+              <FormControl className={classes.formControl} fullWidth margin="normal">
+                <SelectValidator
+                  id="category"
+                  name="category"
+                  label="Category*"
+                  value={this.state.form.category}
+                  onChange={this.handleChange('category')}
+                  validators={['required']}
+                  errorMessages={[formErrorMsg.required]}
+                >
+                  {this.state.categories.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </SelectValidator>
+              </FormControl>
+              <TextValidator
+                id="merchant"
+                name="merchant"
+                label="Merchant*"
+                fullWidth
+                margin="normal"
+                value={this.state.form.merchant}
+                onChange={this.handleChange('merchant')}
+                validators={['required']}
+                errorMessages={[formErrorMsg.required]}
+              />
+              <TextValidator
+                id="amount"
+                name="amount"
+                label="Amount*"
+                type="number"
+                fullWidth
+                margin="normal"
+                value={this.state.form.amount}
+                onChange={this.handleChange('amount')}
+                onBlur={this.handleBlur('amount')}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">$</InputAdornment>
+                }}
+                validators={['required']}
+                errorMessages={[formErrorMsg.required]}
+              />
+              <TextValidator
+                id="notes"
+                name="notes"
+                label="Notes*"
+                multiline
+                fullWidth
+                rowsMax="4"
+                margin="normal"
+                value={this.state.form.notes}
+                onChange={this.handleChange('notes')}
+                validators={['required']}
+                errorMessages={[formErrorMsg.required]}
+              />
+            {/* </ValidatorForm> */}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleDialogToggle} color="secondary">
+              Cancel
+            </Button>
+            <Button type="submit" color="primary" autoFocus>
+              Done
+            </Button>
+          </DialogActions>
+        </ValidatorForm>
       </Dialog>
     );
   }
